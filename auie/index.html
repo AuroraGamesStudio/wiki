@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuroraUIEditor 使用 Wiki</title>
+<style>
+  :root {
+    --bg: #0f1420;
+    --bg-alt: #161d2e;
+    --panel: #1b2436;
+    --border: #2a3650;
+    --text: #d8e0f0;
+    --muted: #8b98b5;
+    --accent: #5b9dff;
+    --accent-2: #7ee0c0;
+    --code-bg: #0b101b;
+    --warn: #ffcc66;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", "Microsoft YaHei", -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header.top {
+    position: sticky; top: 0; z-index: 30;
+    background: linear-gradient(90deg, #131a2a, #1a2437);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  header.top .logo { font-weight: 700; font-size: 18px; letter-spacing: .5px; }
+  header.top .logo span { color: var(--accent-2); }
+  header.top .tag { color: var(--muted); font-size: 13px; }
+  header.top .back { margin-left: auto; font-size: 13px; }
+  .layout { display: flex; align-items: flex-start; max-width: 1400px; margin: 0 auto; }
+  nav.side {
+    position: sticky; top: 61px;
+    width: 270px; flex: 0 0 270px;
+    max-height: calc(100vh - 61px);
+    overflow-y: auto;
+    padding: 18px 10px 60px 20px;
+    border-right: 1px solid var(--border);
+    font-size: 14px;
+  }
+  nav.side h4 { color: var(--muted); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; margin: 18px 8px 6px; }
+  nav.side a {
+    display: block; color: var(--text); padding: 5px 10px; border-radius: 6px;
+    border-left: 2px solid transparent;
+  }
+  nav.side a:hover { background: var(--bg-alt); text-decoration: none; }
+  nav.side a.active { background: var(--panel); border-left-color: var(--accent); color: #fff; }
+  main { flex: 1 1 auto; padding: 24px 40px 120px; min-width: 0; }
+  section { scroll-margin-top: 76px; margin-bottom: 44px; }
+  h1 { font-size: 30px; margin: 8px 0 6px; }
+  h2 {
+    font-size: 23px; margin: 0 0 14px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 { font-size: 18px; margin: 26px 0 10px; color: #eef3ff; }
+  h4 { font-size: 15px; margin: 18px 0 8px; color: var(--accent-2); }
+  p { margin: 10px 0; }
+  code {
+    background: var(--code-bg); color: #ffd9a0;
+    padding: 2px 6px; border-radius: 4px;
+    font-family: "Cascadia Code", "Consolas", "Courier New", monospace; font-size: 13px;
+  }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 16px; overflow-x: auto; margin: 12px 0;
+  }
+  pre code { background: none; color: #cfd8ea; padding: 0; font-size: 13px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--panel); color: #fff; }
+  tr:nth-child(even) td { background: #141b29; }
+  .lead { color: var(--muted); font-size: 15px; }
+  .note {
+    border-left: 3px solid var(--accent); background: #14203a;
+    padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 14px 0; color: #cfe0ff;
+  }
+  .warn {
+    border-left: 3px solid var(--warn); background: #2a2415;
+    padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 14px 0; color: #ffe6b3;
+  }
+  kbd {
+    display: inline-block; background: #20293b; border: 1px solid var(--border);
+    border-bottom-width: 2px; border-radius: 5px; padding: 1px 7px;
+    font-family: "Cascadia Code", "Consolas", monospace; font-size: 12px; color: #eef3ff;
+  }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .card {
+    background: var(--bg-alt); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px;
+  }
+  .card h4 { margin-top: 0; color: var(--accent-2); }
+  .pill {
+    display: inline-block; background: var(--panel); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 999px; padding: 1px 10px; font-size: 12px; margin-right: 6px;
+  }
+  .mock {
+    border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+    background: var(--code-bg); margin: 16px 0; font-size: 13px;
+  }
+  .mock .row { display: flex; }
+  .mock .bar { background: #0f1117; color: #cfe0ff; padding: 6px 12px; border-bottom: 1px solid var(--border); }
+  .mock .tools { flex: 0 0 90px; background: #1a1d24; border-right: 1px solid var(--border); padding: 8px; color: var(--muted); }
+  .mock .stage { flex: 1 1 auto; padding: 28px 12px; text-align: center; color: #6f7f9e; background: #10141d; }
+  .mock .inspector { flex: 0 0 190px; background: #1a1d24; border-left: 1px solid var(--border); padding: 8px; color: var(--muted); }
+  .mock .templates { background: #0f1117; border-top: 1px solid var(--border); padding: 6px 12px; color: var(--muted); }
+  footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); padding: 20px 40px; }
+  @media (max-width: 900px) {
+    nav.side { display: none; }
+    main { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo">Aurora<span>UI</span> · Editor</div>
+  <div class="tag">管理端可视化编辑器 · 使用 Wiki</div>
+  <a class="back" href="/aui/index.html">← 返回框架 Wiki</a>
+</header>
+
+<div class="layout">
+  <nav class="side">
+    <h4>入门</h4>
+    <a href="#overview">1. 它是什么</a>
+    <a href="#requirements">2. 运行要求</a>
+    <a href="#open">3. 打开编辑器</a>
+    <h4>界面</h4>
+    <a href="#layout">4. 界面布局</a>
+    <a href="#workflow">5. 编辑流程</a>
+    <a href="#keys">6. 快捷键</a>
+    <h4>进阶</h4>
+    <a href="#calibration">7. 选框校准</a>
+    <a href="#uiscale">8. 界面缩放</a>
+    <a href="#protocol">9. 通信与协议</a>
+    <a href="#faq">10. 常见问题</a>
+  </nav>
+
+  <main>
+    <h1>AuroraUIEditor 使用 Wiki</h1>
+    <p class="lead">
+      AuroraUIEditor 是 AuroraUI 的<strong>管理端可视化编辑器</strong>（Fabric 客户端模组）。
+      你在游戏里用鼠标直接摆放、选中、拖动菜单元素，编辑结果由服务端权威保存回 YAML。
+    </p>
+    <p class="lead">
+      它是<strong>可选的管理工具</strong>：普通玩家不安装也能正常看到菜单；只有管理员在需要可视化编辑时才进入编辑器。
+      <span class="pill">Fabric</span><span class="pill">MC 1.21.11</span><span class="pill">仅客户端环境</span>
+    </p>
+    <div class="note">
+      本页只讲<strong>使用方法</strong>。菜单 YAML 的字段含义、动作/条件语言、坐标几何等，请看
+      <a href="index.html">框架 Wiki</a>。
+    </div>
+
+    <section id="overview">
+      <h2>1. 它是什么</h2>
+      <p>编辑器与浏览器「所见即所得」工具不同，它<strong>不修改客户端界面，也不跳过服务端</strong>：</p>
+      <div class="cards">
+        <div class="card"><h4>服务端权威</h4>模组只是一个「遥控器」。所有编辑操作都以二进制数据包发给服务端，由服务端改动菜单模型并写回磁盘 YAML。</div>
+        <div class="card"><h4>编辑会话</h4>服务端执行 <code>/auroraui edit &lt;菜单ID&gt;</code> 后为<strong>该玩家</strong>开启一个私有编辑会话，模组界面才可用。</div>
+        <div class="card"><h4>画布 = 真实菜单</h4>中央视口渲染的就是运行中的菜单平面（16:9），你看到的即是玩家看到的。</div>
+        <div class="card"><h4>前端 / 后端</h4>顶部可切换 <strong>前端</strong>（视觉节点）与 <strong>后端</strong>（屏幕对齐的点击命中区）两个标签页，分别编辑。</div>
+      </div>
+    </section>
+
+    <section id="requirements">
+      <h2>2. 运行要求</h2>
+      <table>
+        <thead><tr><th>项目</th><th>要求</th></tr></thead>
+        <tbody>
+          <tr><td>Minecraft</td><td><code>1.21.11</code></td></tr>
+          <tr><td>模组加载器</td><td>Fabric Loader <code>≥ 0.18.6</code></td></tr>
+          <tr><td>依赖模组</td><td><strong>Fabric API</strong>（必需）</td></tr>
+          <tr><td>Java</td><td><code>≥ 21</code></td></tr>
+          <tr><td>运行环境</td><td><code>client</code>（仅客户端安装）</td></tr>
+          <tr><td>服务端</td><td>装有 AuroraUI 插件、且开启了编辑通道的 Paper 服务器</td></tr>
+          <tr><td>权限</td><td><code>auroraui.admin</code>（编辑器只在管理员会话下打开）</td></tr>
+        </tbody>
+      </table>
+      <div class="note">编辑器版本形如 <code>0.1.0-M3.3</code>。连接时会把客户端版本与协议版本发给服务端，版本不匹配时服务端会拒绝同步。</div>
+    </section>
+
+    <section id="open">
+      <h2>3. 打开编辑器</h2>
+      <p>编辑器只能由服务端<strong>推送打开</strong>，玩家无法自行打开：</p>
+      <pre><code># 在服务器控制台或游戏内以管理员身份执行
+/auroraui edit &lt;菜单ID&gt;
+
+# 例如
+/auroraui edit example</code></pre>
+      <p>成功后会进入 AuroraUI 编辑器界面，顶部状态栏显示当前菜单与连接状态：</p>
+      <ul>
+        <li><strong>正在<code>/auroraui edit</code>标题</strong>：显示菜单 ID 与「前端 / 后端」标签。</li>
+        <li><strong>未连接编辑会话</strong>：说明服务端尚未打开会话，或已断开——确认命令执行成功且你有 <code>auroraui.admin</code> 权限。</li>
+        <li>视口中央若提示「请在服务器执行 <code>/auroraui edit &lt;菜单ID&gt;</code>」，即表示当前没有活动会话。</li>
+      </ul>
+      <div class="warn">若提示「服务器未声明 AuroraUI 编辑通道」，说明服务端 AuroraUI 未启用/未加载编辑通道；请检查服务端插件版本与配置。</div>
+    </section>
+
+    <section id="layout">
+      <h2>4. 界面布局</h2>
+      <div class="mock">
+        <div class="bar">前端 / 后端 &nbsp;·&nbsp; 撤销 · 重做 · 保存 · 应用 · 设置</div>
+        <div class="row">
+          <div class="tools">工具<br>选择<br>组<br>矩形<br>边框<br>线段<br>文本<br>图像<br>物品<br>方块<br>点击区域</div>
+          <div class="stage">16:9 菜单视口<br>（渲染真实菜单）</div>
+          <div class="inspector">元素管理器<br>──<br>属性<br>（选中元素后<br>编辑 YAML 参数）</div>
+        </div>
+        <div class="templates">模板 &nbsp;（把组拖到这里保存 / 拖回元素管理器创建副本）</div>
+      </div>
+      <table>
+        <thead><tr><th>区域</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td>顶栏</td><td>前后端标签页切换、撤销/重做/保存/应用、打开设置（含选框校准与界面缩放）</td></tr>
+          <tr><td>工具</td><td>选择工具，以及创建各类节点的「工具」，点击后在菜单里落点创建</td></tr>
+          <tr><td>视口</td><td>真实菜单的 16:9 画布；选择、拖动、缩放的直接操作区</td></tr>
+          <tr><td>元素管理器</td><td>当前标签页的节点/命中区层级树；支持折叠、展开、拖拽改变层级、右键菜单</td></tr>
+          <tr><td>属性</td><td>选中元素后编辑其 YAML 参数（数值可横拖调节）</td></tr>
+          <tr><td>模板</td><td>把单个组保存为可复用模板，或把模板拖回管理器创建副本</td></tr>
+        </tbody>
+      </table>
+      <p>底部状态栏会显示当前元素数量、草稿状态（已同步 / 有未保存修改）、坐标与操作提示。</p>
+    </section>
+
+    <section id="workflow">
+      <h2>5. 编辑流程</h2>
+      <ol>
+        <li><strong>进入会话</strong>：管理员执行 <code>/auroraui edit &lt;菜单ID&gt;</code>。</li>
+        <li><strong>选择工具</strong>：左侧点选「选择」用于选取/拖动；点选「组 / 矩形 / 边框 / 线段 / 文本 / 图像 / 物品 / 方块」后在视口落点创建。切到「后端」标签页时用「点击区域」创建命中区。</li>
+        <li><strong>选中元素</strong>：可在视口直接点选，也可在「元素管理器」层级树中点选；按住可在视口拖动改变位置。</li>
+        <li><strong>改属性</strong>：在「属性」面板编辑字段。数值字段可<strong>横向拖动</strong>调节，单击可键入精确值。</li>
+        <li><strong>层级与组合</strong>：在管理器里拖拽调整父子关系；<kbd>Ctrl</kbd>+<kbd>G</kbd> 把多选编为一组。</li>
+        <li><strong>复用到模板</strong>：把某个组拖到「模板」区保存；需要时从模板区拖回管理器生成副本。</li>
+        <li><strong>保存 / 应用</strong>：<kbd>Ctrl</kbd>+<kbd>S</kbd> 保存回磁盘；「应用」让改动立即生效到运行中的菜单。</li>
+      </ol>
+      <div class="note">
+        <strong>属性面板的调节手势</strong>：数值字段横向拖动 = 快速调节；单击 = 输入数值；按住 <kbd>Alt</kbd> = 精细微调；按住 <kbd>Shift</kbd> = 加速。
+      </div>
+      <div class="note">
+        <strong>剪贴板范围</strong>：复制/粘贴仅在<strong>同一菜单、同一标签页</strong>内有效；跨菜单或跨标签页粘贴会提示「剪贴板为空或来自另一个菜单/编辑器 Tab」。
+      </div>
+    </section>
+
+    <section id="keys">
+      <h2>6. 快捷键</h2>
+      <p>修饰键统一为 <kbd>Ctrl</kbd>（Mac 上为 <kbd>Cmd</kbd>）。</p>
+      <table>
+        <thead><tr><th>快捷键</th><th>作用</th></tr></thead>
+        <tbody>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td>撤销</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd> / <kbd>Ctrl</kbd>+<kbd>Y</kbd></td><td>重做</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>S</kbd></td><td>保存菜单到磁盘</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd></td><td>全选当前标签页元素</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>C</kbd></td><td>复制选中元素</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>V</kbd></td><td>粘贴；若已选中一个组，则粘贴进该组内（<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>V</kbd> 为粘贴到该组）</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>D</kbd></td><td>创建选中元素的副本</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>G</kbd></td><td>把多个选中元素编为一组（前端）</td></tr>
+          <tr><td><kbd>F2</kbd></td><td>单选时聚焦「键名」输入框，快速重命名</td></tr>
+          <tr><td><kbd>Delete</kbd></td><td>删除选中元素</td></tr>
+          <tr><td><kbd>Esc</kbd></td><td>关闭右键菜单 / 取消模板命名 / 取消属性输入</td></tr>
+          <tr><td><kbd>Enter</kbd></td><td>提交属性输入 / 确认模板命名</td></tr>
+        </tbody>
+      </table>
+      <div class="note">「编为一组」只在前端标签页可用——后端命中区不构成嵌套层级。</div>
+    </section>
+
+    <section id="calibration">
+      <h2>7. 选框校准（开发者）</h2>
+      <p>在顶栏点「设置」可打开<strong>选框校准设置</strong>。它用于修正编辑器里「蓝色选框」与元素实际绘制范围之间的偏差，属于<strong>开发者级参数</strong>：</p>
+      <ul>
+        <li><strong>每种元素类型共享一套参数</strong>，且<strong>不会写入菜单 YAML</strong>——它只影响编辑器里的显示与交互。</li>
+        <li>可调字段：选框偏移比例 X/Y、选框缩放 X/Y；点「恢复本类默认」可重置当前类型。</li>
+        <li>所属参数同时用于<strong>绘制、命中、拖动与交互区域</strong>，确保选中框和可点击范围一致。</li>
+        <li>结果保存在客户端的 <code>auroraui-editor-selection-calibration.properties</code>。</li>
+      </ul>
+      <div class="warn">「偏移量 = 元素原始宽/高 × 偏移比例」；「缩放」是选框宽高的倍率，<code>1</code> 为原尺寸，且必须大于 0。</div>
+    </section>
+
+    <section id="uiscale">
+      <h2>8. 界面缩放</h2>
+      <p>校准设置里还有 <strong>界面缩放</strong>（默认 <code>100%</code>），用于整体放大/缩小编辑器面板，方便在小屏或大屏上作业：</p>
+      <ul>
+        <li>用 <code>-</code> / <code>+</code> 步进调节，每次 ±5%；</li>
+        <li>单击数值可<strong>恢复 100%</strong>；</li>
+        <li>该值会持久化到客户端偏好文件 <code>auroraui-editor.properties</code>。</li>
+      </ul>
+      <div class="note">
+        注意：界面缩放针对的是<strong>编辑器自身的面板</strong>（工具、元素管理器、属性等），与视口里菜单的
+        <strong>虚拟屏缩放</strong>是两个不同的概念——后者改变的是菜单平面的显示比例，不改菜单数据。
+      </div>
+    </section>
+
+    <section id="protocol">
+      <h2>9. 通信与协议</h2>
+      <p>编辑器与服务端通过一个自定义频道收发<strong>二进制帧</strong>，不依赖第三方网络库：</p>
+      <table>
+        <thead><tr><th>项</th><th>值</th></tr></thead>
+        <tbody>
+          <tr><td>频道</td><td><code>auroraui:editor</code></td></tr>
+          <tr><td>协议版本</td><td><code>8</code>（<code>EditorProtocol.VERSION</code>）</td></tr>
+          <tr><td>帧魔数</td><td><code>ARCF</code>（数据帧）</td></tr>
+          <tr><td>单包上限</td><td>1 MiB；单帧数据 <code>28&nbsp;000</code> 字节分片</td></tr>
+        </tbody>
+      </table>
+      <p>客户端连接时发送 <code>Hello</code>（带客户端版本），随后接收服务端的快照（Snapshot），并把编辑操作（移动、缩放、切换标签、撤销/重做、保存、应用、增删改、编组、重排、改属性、模板等）以命令包发回。服务端会回 <code>Ack</code> 或 <code>Error</code>；校验失败会以错误状态显示在界面里。</p>
+      <p>服务端 <code>/aurora status</code> 可查看当前协议版本。</p>
+    </section>
+
+    <section id="faq">
+      <h2>10. 常见问题</h2>
+
+      <h3>图标显示成「一整张图标图集」而不是小图标</h3>
+      <p>
+        这是<strong>图标采样区域（UV）计算错误</strong>导致的：绘制图标时，横向/纵向的 UV 坐标被传错了位置，
+        于是渲染器从图集里取了一大块错误区域，看起来就像把小图标放大成了「整张图集的一角」。
+        修复方式是把 UV 参数按正确顺序（<code>u0, u1, v0, v1</code>）传入，或改用支持「区域绘制」的贴图接口，
+        只裁剪出每个图标 16×16 的那一块。
+      </p>
+
+      <h3>调「界面缩放」只缩小了一部分，不像浏览器的 Ctrl+/Ctrl-</h3>
+      <p>
+        浏览器缩放是给<strong>整页</strong>套一个统一的坐标变换；而当前实现里，「界面缩放」只按比例调整了几个
+        <strong>停靠面板的宽高</strong>（工具、元素管理器、模板），顶栏、视口、文字和图标并没有一起缩放，
+        所以看起来「只有一部分变小了」。
+      </p>
+      <p>
+        要做到浏览器那种<strong>整体缩放</strong>，需要在渲染编辑器整体时对整个图层栈套用一次统一缩放
+        （先 <code>push</code> 全局矩阵 → <code>scale</code> → 正常绘制 → <code>pop</code>），
+        这样鼠标坐标再按同一系数换算回逻辑坐标即可，所有面板、文字与图标都会一起缩放。
+      </p>
+
+      <h3>其他</h3>
+      <ul>
+        <li><strong>改了没生效？</strong>确认已 <kbd>Ctrl</kbd>+<kbd>S</kbd> 保存，或点「应用」让运行中的菜单立即刷新。</li>
+        <li><strong>粘贴没反应？</strong>剪贴板只在同一菜单、同一标签页内共享。</li>
+        <li><strong>拖不进某个组？</strong>不能把组拖入自身或自己的后代。</li>
+        <li><strong>模板保存失败？</strong>只有<strong>单个</strong>组可以保存为模板。</li>
+      </ul>
+    </section>
+
+    <footer>
+      AuroraUIEditor 使用 Wiki · AuroraUI 管理端可视化编辑器
+    </footer>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('nav.side a'));
+    var sections = links.map(function (a) {
+      return document.querySelector(a.getAttribute('href'));
+    }).filter(Boolean);
+    function onScroll() {
+      var pos = window.scrollY + 90;
+      var current = sections[0];
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].offsetTop <= pos) current = sections[i];
+      }
+      links.forEach(function (a) {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+</body>
+</html>
