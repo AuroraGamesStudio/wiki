@@ -131,6 +131,8 @@
 
 <div class="layout">
   <nav class="side">
+    <h4>获取</h4>
+    <a href="#download">下载与安装</a>
     <h4>入门</h4>
     <a href="#overview">1. 它是什么</a>
     <a href="#requirements">2. 运行要求</a>
@@ -161,6 +163,23 @@
       <a href="/aui/index.html">框架 Wiki</a>。
     </div>
 
+    <section id="download">
+      <h2>下载与安装</h2>
+      <p>AuroraUIEditor 是 Fabric <strong>客户端</strong>模组，放进游戏实例的 <code>mods/</code> 即可；它本身不含菜单逻辑，需要由服务端提供编辑通道。</p>
+      <table>
+        <thead><tr><th>渠道</th><th>链接</th></tr></thead>
+        <tbody>
+          <tr><td>MineBBS</td><td><a href="https://www.minebbs.com/resources/minecraft-auroraui.18425/" target="_blank" rel="noopener">AuroraUIEditor 资源页 →</a></td></tr>
+          <tr><td>Modrinth</td><td><a href="https://modrinth.com/mod/auie" target="_blank" rel="noopener">modrinth.com/mod/auie →</a></td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        编辑通道可由两种环境提供：<strong>Paper 服务器</strong>（装 AuroraUI 插件），或<strong>单人游戏</strong>
+        （装 AuroraUI 的 Fabric 版）。AuroraUI 本体见
+        <a href="https://www.minebbs.com/resources/minecraft-auroraui.18426//" target="_blank" rel="noopener">MineBBS 资源页</a>。
+      </div>
+    </section>
+
     <section id="overview">
       <h2>1. 它是什么</h2>
       <p>编辑器与浏览器「所见即所得」工具不同，它<strong>不修改客户端界面，也不跳过服务端</strong>：</p>
@@ -182,7 +201,7 @@
           <tr><td>依赖模组</td><td><strong>Fabric API</strong>（必需）</td></tr>
           <tr><td>Java</td><td><code>≥ 21</code></td></tr>
           <tr><td>运行环境</td><td><code>client</code>（仅客户端安装）</td></tr>
-          <tr><td>服务端</td><td>装有 AuroraUI 插件、且开启了编辑通道的 Paper 服务器</td></tr>
+          <tr><td>服务端 / 环境</td><td>装有 AuroraUI 插件并开启编辑通道的 <strong>Paper 服务器</strong>；或安装了 AuroraUI Fabric 版的<strong>单人游戏</strong></td></tr>
           <tr><td>权限</td><td><code>auroraui.admin</code>（编辑器只在管理员会话下打开）</td></tr>
         </tbody>
       </table>
@@ -191,12 +210,13 @@
 
     <section id="open">
       <h2>3. 打开编辑器</h2>
-      <p>编辑器只能由服务端<strong>推送打开</strong>，玩家无法自行打开：</p>
+      <p>编辑器只能由服务端<strong>推送打开</strong>，玩家无法自行打开（单人游戏中由本地集成服务器承担该角色）：</p>
       <pre><code># 在服务器控制台或游戏内以管理员身份执行
 /auroraui edit &lt;菜单ID&gt;
 
 # 例如
 /auroraui edit example</code></pre>
+      <div class="note"><strong>单人游戏</strong>：在 <code>mods/</code> 里同时装好 AuroraUI（Fabric 版）与 AuroraUIEditor，进入存档后执行同样的 <code>/auroraui edit &lt;菜单ID&gt;</code> 即可，无需额外配置。</div>
       <p>成功后会进入 AuroraUI 编辑器界面，顶部状态栏显示当前菜单与连接状态：</p>
       <ul>
         <li><strong>正在<code>/auroraui edit</code>标题</strong>：显示菜单 ID 与「前端 / 后端」标签。</li>
