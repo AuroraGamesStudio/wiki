@@ -36,7 +36,8 @@
     padding: 14px 24px;
     display: flex; align-items: center; gap: 16px;
   }
-  header.top .logo { font-weight: 700; font-size: 18px; letter-spacing: .5px; }
+  header.top .logo { font-weight: 700; font-size: 18px; letter-spacing: .5px; display: flex; align-items: center; gap: 10px; }
+  header.top .logo img { width: 24px; height: 24px; border-radius: 4px; }
   header.top .logo span { color: var(--accent-2); }
   header.top .tag { color: var(--muted); font-size: 13px; }
   header.top .back { margin-left: auto; font-size: 13px; }
@@ -104,6 +105,12 @@
     display: inline-block; background: var(--panel); border: 1px solid var(--border);
     color: var(--muted); border-radius: 999px; padding: 1px 10px; font-size: 12px; margin-right: 6px;
   }
+  .download-btn {
+    display: inline-block; background: var(--accent); color: #0f1420;
+    border-radius: 8px; padding: 8px 18px; font-weight: 700; font-size: 14px;
+    text-decoration: none; transition: background 0.15s;
+  }
+  .download-btn:hover { background: #8bbaff; text-decoration: none; }
   .mock {
     border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
     background: var(--code-bg); margin: 16px 0; font-size: 13px;
@@ -124,7 +131,7 @@
 <body>
 
 <header class="top">
-  <div class="logo">Aurora<span>UI</span> · Editor</div>
+  <div class="logo"><img src="/auie/icon.png" alt="icon">Aurora<span>UI</span> · Editor</div>
   <div class="tag">管理端可视化编辑器 · 使用 Wiki</div>
   <a class="back" href="/aui/index.html">← 返回框架 Wiki</a>
 </header>
@@ -166,11 +173,17 @@
     <section id="download">
       <h2>下载与安装</h2>
       <p>AuroraUIEditor 是 Fabric <strong>客户端</strong>模组，放进游戏实例的 <code>mods/</code> 即可；它本身不含菜单逻辑，需要由服务端提供编辑通道。</p>
+      <div class="note">
+        <strong>直接下载（obfuscated JAR）</strong>：<br>
+        <a href="AuroraUIEditor-0.2.0.jar" class="download-btn">⬇ 下载 AuroraUIEditor-0.2.0.jar</a>
+        &nbsp;（右键另存为 / Ctrl+S，放入 <code>mods/</code> 目录）
+      </div>
       <table>
         <thead><tr><th>渠道</th><th>链接</th></tr></thead>
         <tbody>
           <tr><td>MineBBS</td><td><a href="https://www.minebbs.com/resources/minecraft-auroraui.18425/" target="_blank" rel="noopener">AuroraUIEditor 资源页 →</a></td></tr>
           <tr><td>Modrinth</td><td><a href="https://modrinth.com/mod/auie" target="_blank" rel="noopener">modrinth.com/mod/auie →</a></td></tr>
+          <tr><td>爱发电</td><td><a href="https://ifdian.net/a/aurorastudio" target="_blank" rel="noopener">ifdian.net/a/aurorastudio →</a>（支持 AuroraUI 项目）</td></tr>
         </tbody>
       </table>
       <div class="note">
