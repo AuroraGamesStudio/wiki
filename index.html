@@ -3,114 +3,286 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AuroraStudio · 首页</title>
+<title>极光创想 · AuroraStudio</title>
 <style>
   :root {
-    --bg: #0f1420; --bg-alt: #161d2e; --panel: #1b2436;
-    --border: #2a3650; --text: #d8e0f0; --muted: #8b98b5;
-    --accent: #5b9dff; --accent-2: #7ee0c0; --code-bg: #0b101b;
+    --bg: #0d1117;
+    --bg-alt: #161b22;
+    --panel: #1c2128;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --accent-2: #3fb950;
+    --accent-3: #d2a8ff;
+    --card-hover: #1f2937;
   }
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
-    margin: 0; font-family: "Segoe UI", "Microsoft YaHei", -apple-system, Roboto, sans-serif;
-    background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px;
+    font-family: "Segoe UI", "Microsoft YaHei", -apple-system, Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
   }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  header {
-    background: linear-gradient(90deg, #131a2a, #1a2437);
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,17,23,.85);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
-    padding: 18px 24px; display: flex; align-items: center; gap: 12px;
+    padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
   }
-  header .logo { font-weight: 700; font-size: 20px; letter-spacing: .5px; }
-  header .logo span { color: var(--accent-2); }
-  header .tag { color: var(--muted); font-size: 13px; }
-  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
-  h1 { font-size: 32px; margin: 0 0 8px; }
-  h2 { font-size: 22px; margin: 36px 0 12px; color: #eef3ff; }
-  .lead { color: var(--muted); font-size: 16px; margin-bottom: 24px; }
-  .subtitle { color: var(--accent-2); font-size: 15px; margin-bottom: 32px; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 20px 0; }
+  nav .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 16px; color: var(--text);
+    text-decoration: none;
+  }
+  nav .brand:hover { text-decoration: none; }
+  nav .brand img { width: 28px; height: 28px; border-radius: 6px; }
+  nav .brand .en { color: var(--accent-2); }
+  nav .links { display: flex; gap: 20px; font-size: 14px; }
+  nav .links a { color: var(--muted); }
+  nav .links a:hover { color: var(--text); text-decoration: none; }
+
+  /* ── HERO ── */
+  .hero {
+    max-width: 960px; margin: 0 auto;
+    padding: 80px 24px 60px;
+    text-align: center;
+  }
+  .hero .logo-large {
+    width: 80px; height: 80px; border-radius: 18px;
+    margin: 0 auto 24px;
+    border: 2px solid var(--border);
+    object-fit: cover;
+    background: var(--panel);
+  }
+  .hero h1 {
+    font-size: 42px; font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+    background: linear-gradient(135deg, var(--text) 60%, var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .sub {
+    font-size: 15px; color: var(--muted);
+    margin-bottom: 28px; letter-spacing: 1px;
+  }
+  .hero .desc {
+    font-size: 17px; color: var(--muted);
+    max-width: 600px; margin: 0 auto 36px;
+    line-height: 1.8;
+  }
+  .hero .desc strong { color: var(--text); }
+  .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 22px; border-radius: 8px;
+    font-size: 14px; font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--panel); color: var(--text);
+    transition: background .15s, border-color .15s;
+  }
+  .btn:hover { background: var(--card-hover); text-decoration: none; }
+  .btn-primary {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+  }
+  .btn-primary:hover { background: #79b8ff; border-color: #79b8ff; }
+
+  /* ── SECTION ── */
+  .section {
+    max-width: 960px; margin: 0 auto;
+    padding: 48px 24px;
+  }
+  .section-title {
+    font-size: 22px; font-weight: 700;
+    margin-bottom: 24px; color: var(--text);
+  }
+  .section-title span { color: var(--accent-2); }
+
+  /* ── PROJECT CARDS ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
   .card {
-    background: var(--bg-alt); border: 1px solid var(--border); border-radius: 10px;
-    padding: 18px 20px; transition: border-color 0.15s;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color .2s, transform .15s;
+    display: flex; flex-direction: column;
   }
-  .card:hover { border-color: var(--accent); }
-  .card h3 { margin: 0 0 6px; font-size: 16px; color: var(--accent-2); }
-  .card p { margin: 0; font-size: 14px; color: var(--muted); }
-  .card .badge { display: inline-block; background: var(--panel); border: 1px solid var(--border);
-    color: var(--muted); border-radius: 999px; padding: 1px 8px; font-size: 11px; margin-top: 8px; }
-  .note {
-    border-left: 3px solid var(--accent); background: #14203a;
-    padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 16px 0; color: #cfe0ff; font-size: 14px;
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
   }
-  .team { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
-  .team-member {
-    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
-    padding: 8px 14px; font-size: 14px; color: var(--text);
+  .card .icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--panel); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 14px;
   }
-  .team-member span { color: var(--accent-2); }
-  footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--border);
-    padding: 20px 24px; text-align: center; }
-  @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+  .card h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+  .card p { font-size: 14px; color: var(--muted); flex: 1; margin-bottom: 14px; }
+  .card .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    display: inline-block;
+    background: var(--panel); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 999px;
+    padding: 2px 10px; font-size: 12px;
+  }
+  .tag-blue { border-color: #1f6feb33; color: var(--accent); }
+  .tag-green { border-color: #23863633; color: var(--accent-2); }
+  .tag-purple { border-color: #8957e533; color: var(--accent-3); }
+
+  /* ── FEATURES ── */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .feat {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .feat h4 {
+    font-size: 14px; font-weight: 700; margin-bottom: 6px;
+    color: var(--accent-2);
+  }
+  .feat p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px;
+    text-align: center;
+    font-size: 13px; color: var(--muted);
+  }
+  footer a { color: var(--accent); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 30px; }
+    .hero { padding: 48px 16px 36px; }
+    nav .links { gap: 12px; font-size: 13px; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">Aurora<span>Studio</span></div>
-  <div class="tag">Minecraft 工具与模组开发团队</div>
-</header>
-
-<div class="wrap">
-  <h1>欢迎来到 AuroraStudio</h1>
-  <p class="lead">
-    我们是一个专注于 Minecraft 服务端与客户端工具开发的独立团队。<br>
-    目前主要项目是 <strong>AuroraUI</strong> —— 一套面向 Paper 服务器的服务端驱动界面框架，以及配套的可视化编辑器。
-  </p>
-  <p class="subtitle">
-    <span style="color:var(--accent)">◆</span>&nbsp; Paper / Java 服务端插件 &nbsp;·&nbsp;
-    <span style="color:var(--accent-2)">◆</span>&nbsp; Fabric 客户端模组 &nbsp;·&nbsp;
-    <span style="color:#ffd9a0">◆</span>&nbsp; 可视化编辑器
-  </p>
-
-  <h2>核心项目</h2>
-  <div class="cards">
-    <a href="/aui/index.html" class="card" style="text-decoration:none;color:inherit">
-      <h3>AuroraUI</h3>
-      <p>Paper 服务端驱动的 Minecraft 界面框架。用 HTML 菜单描述 UI，通过画布渲染文字、图片、物品、方块与命中区，支持丰富的动作与条件语言。</p>
-      <span class="badge">Java 21 · Paper · MC 1.21.x</span>
-    </a>
-    <a href="/auie/index.html" class="card" style="text-decoration:none;color:inherit">
-      <h3>AuroraUIEditor</h3>
-      <p>AuroraUI 的可视化编辑工具（Fabric 客户端模组）。在单人游戏或 Fabric 服务器上直接编辑菜单，所见即所得。</p>
-      <span class="badge">Fabric · MC 1.21.11 · 客户端</span>
-    </a>
+<nav>
+  <a href="/" class="brand">
+    <img src="/icon.png" alt="logo">
+    极光<span class="en">Studio</span>
+  </a>
+  <div class="links">
+    <a href="/aui/index.html">AuroraUI</a>
+    <a href="/auie/index.html">AuroraUIEditor</a>
+    <a href="https://github.com/AuroraGamesStudio" target="_blank" rel="noopener">GitHub</a>
   </div>
+</nav>
 
-  <h2>关于团队</h2>
-  <p>
-    AuroraStudio 是一个小型开发团队，致力于让 Minecraft 服务器拥有更灵活、更美观的自定义界面体验。
-    我们的理念是降低 UI 开发门槛——设计师用 HTML 写菜单，管理员用编辑器拖拽调整，开发者通过 Java API 深度集成。
+<!-- HERO -->
+<div class="hero">
+  <img src="/icon.png" alt="logo" class="logo-large">
+  <h1>极光创想</h1>
+  <div class="sub">AURORA STUDIO</div>
+  <p class="desc">
+    我们是一个专注于 <strong>Minecraft</strong> 服务端与客户端工具开发的独立工作室。<br>
+    以开源为起点，让更灵活、更美观的自定义界面触手可及。
   </p>
-  <p style="color:var(--muted); font-size:14px">
-    如需联系或了解更多，请访问我们的开源仓库或社区页面。
-  </p>
-
-  <h2>快速链接</h2>
-  <ul style="color:var(--muted); padding-left: 20px;">
-    <li><a href="/aui/index.html">AuroraUI 框架 Wiki</a> — 菜单格式、动作语言、API 详解</li>
-    <li><a href="/aui/api/index.html">公开 API 文档</a> — <code>AuroraUI</code> 单例入口与 DSL</li>
-    <li><a href="/auie/index.html">AuroraUIEditor 使用 Wiki</a> — 编辑器安装、操作与快捷键</li>
-  </ul>
-
-  <div class="note">
-    本 Wiki 由 AuroraStudio 团队维护，文档内容持续更新中。如有错误或建议，欢迎提交 Issue。
+  <div class="btns">
+    <a href="/aui/index.html" class="btn btn-primary">探索 AuroraUI</a>
+    <a href="/auie/index.html" class="btn">查看编辑器</a>
+    <a href="https://github.com/AuroraGamesStudio" class="btn" target="_blank" rel="noopener">GitHub 仓库</a>
   </div>
 </div>
 
+<!-- PROJECTS -->
+<div class="section">
+  <h2 class="section-title">核心项目</h2>
+  <div class="cards">
+    <a href="/aui/index.html" class="card" style="text-decoration:none;color:inherit">
+      <div class="icon">◆</div>
+      <h3>AuroraUI</h3>
+      <p>服务端驱动的 Minecraft 界面框架。用 HTML 描述画布，通过命中区接管点击、悬浮提示与导航，支持 Paper / Java 插件生态。</p>
+      <div class="tags">
+        <span class="tag tag-blue">Java 21</span>
+        <span class="tag tag-blue">Paper</span>
+        <span class="tag tag-blue">MC 1.21.x</span>
+      </div>
+    </a>
+    <a href="/auie/index.html" class="card" style="text-decoration:none;color:inherit">
+      <div class="icon">✦</div>
+      <h3>AuroraUIEditor</h3>
+      <p>可视化编辑工具（Fabric 客户端模组）。在单人游戏或 Fabric 服务器上直接编辑菜单，所见即所得，0.2.0 起支持 UI 创建与读取。</p>
+      <div class="tags">
+        <span class="tag tag-green">Fabric</span>
+        <span class="tag tag-green">MC 1.21.11</span>
+        <span class="tag tag-green">客户端</span>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="section">
+  <h2 class="section-title">为什么选择<span> AuroraUI</span></h2>
+  <div class="features">
+    <div class="feat">
+      <h4>服务端权威</h4>
+      <p>菜单始终由服务端渲染与判定，玩家无需安装任何客户端模组即可正常使用。</p>
+    </div>
+    <div class="feat">
+      <h4>HTML 驱动</h4>
+      <p>用熟悉的前端语言描述 UI 结构，设计师与开发者分工明确，降低协作门槛。</p>
+    </div>
+    <div class="feat">
+      <h4>可视化编辑</h4>
+      <p>配套 AuroraUIEditor，在集成服务器或 Paper 服上直接拖拽调整，所见即所得。</p>
+    </div>
+    <div class="feat">
+      <h4>丰富的动作语言</h4>
+      <p>支持点击事件、条件判断、状态读写、经济/物品操作等，兼容 TrMenu 风格别名。</p>
+    </div>
+    <div class="feat">
+      <h4>完整公开 API</h4>
+      <p>提供全新的 DSL 入口 <code>AuroraUI</code>，声明锚点、打开菜单、路由分发一目了然。</p>
+    </div>
+    <div class="feat">
+      <h4>资源包管线</h4>
+      <p>自动将图片目录打包为资源包，支持位图字体、九宫格 tooltip 皮肤与 CraftEngine 集成。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="section">
+  <h2 class="section-title">关于<span> 极光创想</span></h2>
+  <p style="color:var(--muted);max-width:720px;line-height:1.8">
+    极光创想（AuroraStudio）是一个小型独立开发团队，致力于让 Minecraft 服务器拥有更灵活、更美观的自定义界面体验。
+    我们的理念是降低 UI 开发门槛——设计师用 HTML 写菜单，管理员用编辑器拖拽调整，开发者通过 Java API 深度集成。
+    所有项目基于开源协议，欢迎社区参与共建。
+  </p>
+</div>
+
 <footer>
-  AuroraStudio &copy; 2026 &nbsp;·&nbsp; 所有项目基于 Minecraft 社区开源协议
+  极光创想 &copy; 2026 &nbsp;·&nbsp; AuroraStudio &nbsp;·&nbsp;
+  <a href="https://github.com/AuroraGamesStudio" target="_blank" rel="noopener">GitHub</a>
 </footer>
 
 </body>
