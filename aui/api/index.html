@@ -1,0 +1,398 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuroraUI 公开 API · AuroraUI</title>
+<style>
+  :root {
+    --bg: #0f1420; --bg-alt: #161d2e; --panel: #1b2436;
+    --border: #2a3650; --text: #d8e0f0; --muted: #8b98b5;
+    --accent: #5b9dff; --accent-2: #7ee0c0; --code-bg: #0b101b; --warn: #ffcc66;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; font-family: "Segoe UI", "Microsoft YaHei", -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header.top {
+    position: sticky; top: 0; z-index: 30;
+    background: linear-gradient(90deg, #131a2a, #1a2437);
+    border-bottom: 1px solid var(--border); padding: 14px 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  header.top .logo { font-weight: 700; font-size: 18px; letter-spacing: .5px; }
+  header.top .logo span { color: var(--accent-2); }
+  header.top .tag { color: var(--muted); font-size: 13px; }
+  .layout { display: flex; align-items: flex-start; max-width: 1400px; margin: 0 auto; }
+  nav.side {
+    position: sticky; top: 61px; width: 270px; flex: 0 0 270px;
+    max-height: calc(100vh - 61px); overflow-y: auto;
+    padding: 18px 10px 60px 20px; border-right: 1px solid var(--border); font-size: 14px;
+  }
+  nav.side h4 { color: var(--muted); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; margin: 18px 8px 6px; }
+  nav.side a { display: block; color: var(--text); padding: 5px 10px; border-radius: 6px; border-left: 2px solid transparent; }
+  nav.side a:hover { background: var(--bg-alt); text-decoration: none; }
+  main { flex: 1 1 auto; padding: 24px 40px 120px; min-width: 0; }
+  section { scroll-margin-top: 76px; margin-bottom: 44px; }
+  h1 { font-size: 30px; margin: 8px 0 6px; }
+  h2 { font-size: 23px; margin: 0 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 18px; margin: 26px 0 10px; color: #eef3ff; }
+  h4 { font-size: 15px; margin: 18px 0 8px; color: var(--accent-2); }
+  p { margin: 10px 0; }
+  code { background: var(--code-bg); color: #ffd9a0; padding: 2px 6px; border-radius: 4px; font-family: "Cascadia Code", "Consolas", monospace; font-size: 13px; }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: 12px 0; }
+  pre code { background: none; color: #cfd8ea; padding: 0; font-size: 13px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--panel); color: #fff; }
+  tr:nth-child(even) td { background: #141b29; }
+  .lead { color: var(--muted); font-size: 15px; }
+  .note { border-left: 3px solid var(--accent); background: #14203a; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 14px 0; color: #cfe0ff; }
+  .warn { border-left: 3px solid var(--warn); background: #2a2415; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 14px 0; color: #ffe6b3; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .card { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .card h4 { margin-top: 0; color: var(--accent-2); }
+  .pill { display: inline-block; background: var(--panel); border: 1px solid var(--border); color: var(--muted); border-radius: 999px; padding: 1px 10px; font-size: 12px; margin-right: 6px; }
+  .signatures td code { white-space: nowrap; }
+  footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); padding: 20px 40px; }
+  @media (max-width: 900px) { nav.side { display: none; } main { padding: 18px; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo">Aurora<span>UI</span></div>
+  <div class="tag">公开 API · <code>AuroraUI</code> 单例入口</div>
+</header>
+
+<div class="layout">
+  <nav class="side">
+    <a href="/aui/index.html">← 返回主 Wiki</a>
+    <h4>总览</h4>
+    <a href="#philosophy">设计理念</a>
+    <a href="#quickstart">快速上手</a>
+    <h4>AuroraUI 单例</h4>
+    <a href="#declare">AuroraUI.declare { }</a>
+    <a href="#route">AuroraUI.route</a>
+    <a href="#show">AuroraUI.show / hide</a>
+    <a href="#mode">指针模式</a>
+    <h4>DSL 事件</h4>
+    <a href="#onactivate">onActivate / onClose</a>
+    <a href="#onpointer">onPointerMove / onScroll</a>
+    <a href="#onsurface">onSurfaceChange / onTick</a>
+    <h4>AuroraUIRealm</h4>
+    <a href="#realm">上下文能力</a>
+    <a href="#navigation">导航与生命周期</a>
+    <h4>迁移</h4>
+    <a href="#migration">从旧 API 迁移</a>
+    <h4>工具</h4>
+    <a href="/auie/index.html">AuroraUIEditor →</a>
+  </nav>
+
+  <main>
+    <h1>AuroraUI 公开 API</h1>
+    <p class="lead">
+      从 v3 起，所有第三方交互通过 <strong><code>AuroraUI</code> 单例</strong> 完成。
+      没有 Bukkit ServicesManager、没有 <code>AuroraUIApi</code> 接口、没有继承 <code>AuroraUIApplicationSession</code>。
+      一切是 <strong>DSL 声明式 + Lambda 事件</strong>。
+    </p>
+    <p class="lead">
+      <span class="pill">Maven 依赖 auroraui-api</span>
+      <span class="pill">Kotlin 1.4+ SAM</span>
+      <span class="pill">必须在主线程调用</span>
+    </p>
+
+    <section id="philosophy">
+      <h2>设计理念</h2>
+      <div class="cards">
+        <div class="card"><h4>单例入口</h4><code>AuroraUI</code> object 是唯一公开入口。没有注册服务，没有接口查询。</div>
+        <div class="card"><h4>DSL 声明</h4>用 <code>AuroraUI.declare(id, owner) { ... }</code> 一次性写完应用配置与所有事件。</div>
+        <div class="card"><h4>Lambda 事件</h4>不再抽象类继承，每个回调是一个 lambda；不需要的就不写。</div>
+        <div class="card"><h4>AuroraUIRealm</h4>事件 receiver 自带上下文（player / surface / mode），不再需要显式传 context。</div>
+        <div class="card"><h4>类型安全</h4>所有返回值是 Kotlin data class / enum，不再有 <code>Object</code> 强转。</div>
+        <div class="card"><h4>向后兼容</h4>旧 <code>AuroraUIApi</code> / <code>AuroraUIApplication</code> / <code>AuroraUIApplicationContext</code> 在 <code>LegacyCompat.kt</code> 保留为 <code>@Deprecated</code> 桥接。</div>
+      </div>
+    </section>
+
+    <section id="quickstart">
+      <h2>快速上手</h2>
+      <p>依赖（<code>pom.xml</code>）：</p>
+      <pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;aurora.studio.aurora.ui&lt;/groupId&gt;
+  &lt;artifactId&gt;auroraui-api&lt;/artifactId&gt;
+  &lt;version&gt;LATEST&lt;/version&gt;
+  &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+      <p>最小可用示例 — 一个"商店"锚点，带画布、权限、点击事件：</p>
+      <pre><code>import aurora.studio.aurora.ui.api.*
+import org.bukkit.plugin.java.JavaPlugin
+
+class MyShopPlugin : JavaPlugin() {
+    override fun onEnable() {
+        AuroraUI.declare("myshop:shop", this) {
+            permission = "myshop.use"
+            captureScroll = true
+            tickEvery = 2
+
+            onActivate { evt -&gt;
+                // this == AuroraUIRealm，直接访问上下文
+                server.broadcast("${player.name} 进入商店")
+                cursor(true)
+            }
+
+            onScroll { evt -&gt;
+                // 滚轮翻页
+            }
+
+            onClose { evt -&gt;
+                // evt.reason ∈ AuroraUICloseReason
+            }
+        }
+    }
+}</code></pre>
+      <p>通过命名空间路由打开锚点（或从 HTML 菜单用 <code>open-app: myshop:shop</code>）：</p>
+      <pre><code>AuroraUI.route("myshop:shop", this, AuroraUIRoute { player, args -&gt;
+    AuroraUI.show(player, "myshop:shop", args, AuroraUIShowKind.ANCHOR)
+})</code></pre>
+    </section>
+
+    <section id="declare">
+      <h2><code>AuroraUI.declare(id, owner) { ... }</code></h2>
+      <p>声明一个锚点（独立于菜单的、由第三方插件托管的 UI 会话）。DSL 块里可写以下属性与回调：</p>
+      <table>
+        <thead><tr><th>DSL 项</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody class="signatures">
+          <tr><td><code>permission</code></td><td>String</td><td>打开前检查的 Bukkit 权限节点（空字符串 = 无要求）</td></tr>
+          <tr><td><code>captureScroll</code></td><td>Boolean</td><td>是否在锚点活跃时接管滚轮（默认 false）</td></tr>
+          <tr><td><code>inheritCanvas</code></td><td>Boolean</td><td>是否继承上一个会话的画布平面（默认 true）</td></tr>
+          <tr><td><code>tickEvery</code></td><td>Int</td><td>onTick 触发间隔（tick），1–1200；默认 20</td></tr>
+          <tr><td><code>canvas { ... }</code></td><td>AuroraUICanvas DSL</td><td>逻辑画布：<code>width / height / pixelsPerBlock / distance</code></td></tr>
+          <tr><td><code>onActivate { realm, evt -&gt; ... }</code></td><td>Lambda</td><td>点击命中区时触发</td></tr>
+          <tr><td><code>onPointerMove { realm, evt -&gt; ... }</code></td><td>Lambda</td><td>指针位置变化时触发</td></tr>
+          <tr><td><code>onPointerModeChange { realm, evt -&gt; ... }</code></td><td>Lambda</td><td>touch ↔ mouse 切换</td></tr>
+          <tr><td><code>onScroll { realm, evt -&gt; ... }</code></td><td>Lambda</td><td>滚轮事件</td></tr>
+          <tr><td><code>onSurfaceChange { realm, evt -&gt; ... }</code></td><td>Lambda</td><td>画布平面变化（打开、传送、重生）</td></tr>
+          <tr><td><code>onTick { realm, evt -&gt; ... }</code></td><td>Lambda</td><td>周期性 tick</td></tr>
+          <tr><td><code>onClose { realm, evt -&gt; ... }</code></td><td>Lambda</td><td>锚点关闭，<code>evt.reason</code> 说明原因</td></tr>
+        </tbody>
+      </table>
+      <p><code>AuroraUI.declare</code> 返回 <code>AuroraUIAnchorHandle</code>：</p>
+      <pre><code>val handle: AuroraUIAnchorHandle = AuroraUI.declare("myshop:shop", this) { ... }
+handle.alive          // 是否已注册
+handle.remove()       // 手动注销（插件禁用时自动移除）
+// handle.close() 等价于 remove()</code></pre>
+    </section>
+
+    <section id="route">
+      <h2><code>AuroraUI.route / AuroraUI.dispatch</code></h2>
+      <p>轻量命名空间路由 —— 菜单 <code>open-app: myshop:shop args...</code> 的入口。</p>
+      <pre><code>// 注册
+AuroraUI.route("myshop:shop", this, AuroraUIRoute { player, arguments -&gt;
+    AuroraUI.show(player, "myshop:shop", arguments, AuroraUIShowKind.ANCHOR)
+})
+// 也可以直接打开菜单
+AuroraUI.route("myshop:quick-help", this, AuroraUIRoute { player, args -&gt;
+    AuroraUI.show(player, "help", args, AuroraUIShowKind.MENU)
+})
+
+// 查询/移除
+AuroraUI.namespaces()      // Set&lt;String&gt;
+// 插件禁用时自动移除其所有 route</code></pre>
+    </section>
+
+    <section id="show">
+      <h2><code>AuroraUI.show / AuroraUI.hide / AuroraUI.back</code></h2>
+      <table>
+        <thead><tr><th>方法</th><th>签名</th><th>说明</th></tr></thead>
+        <tbody class="signatures">
+          <tr><td><code>AuroraUI.show</code></td><td><code>(Player, String, List&lt;String&gt;, AuroraUIShowKind): Boolean</code></td><td>打开菜单 <code>MENU</code> 或锚点 <code>ANCHOR</code></td></tr>
+          <tr><td><code>AuroraUI.hide</code></td><td><code>(Player): Unit</code></td><td>关闭当前会话</td></tr>
+          <tr><td><code>AuroraUI.back</code></td><td><code>(Player): Boolean</code></td><td>从历史栈返回上一级</td></tr>
+          <tr><td><code>AuroraUI.animate</code></td><td><code>(Player, String): Boolean</code></td><td>播放动画轨道</td></tr>
+          <tr><td><code>AuroraUI.stop</code></td><td><code>(Player, String): Boolean</code></td><td>停止动画轨道</td></tr>
+          <tr><td><code>AuroraUI.anchors</code></td><td><code>(Player): Set&lt;String&gt;</code></td><td>该玩家正在播放的轨道</td></tr>
+          <tr><td><code>AuroraUI.anchors</code></td><td><code>(): Set&lt;String&gt;</code></td><td>所有已注册锚点 ID</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="mode">
+      <h2>指针模式</h2>
+      <table>
+        <thead><tr><th>枚举</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>AuroraUIMode.TOUCH</code></td><td>默认"十字准星"模式</td></tr>
+          <tr><td><code>AuroraUIMode.MOUSE</code></td><td>真正的光标模式</td></tr>
+          <tr><td><code>AuroraUIPolicy.CHOICE</code></td><td>玩家可以自己选择模式</td></tr>
+          <tr><td><code>AuroraUIPolicy.FORCE_TOUCH</code></td><td>服务器强制 touch</td></tr>
+          <tr><td><code>AuroraUIPolicy.FORCE_MOUSE</code></td><td>服务器强制 mouse</td></tr>
+        </tbody>
+      </table>
+      <pre><code>AuroraUI.modeOf(player)                      // AuroraUIMode
+AuroraUI.modeOf(player, AuroraUIMode.MOUSE)       // Boolean（是否成功切换）
+AuroraUI.policy()                            // AuroraUIPolicy
+
+// 查询当前画布/指针
+AuroraUI.surfaceOf(player)                   // AuroraUISurface?
+AuroraUI.pointOf(player)                     // AuroraUIPoint?</code></pre>
+    </section>
+
+    <section id="onactivate">
+      <h2>DSL 事件 —— 生命周期</h2>
+      <h3><code>onActivate</code></h3>
+      <pre><code>onActivate { evt -&gt;
+    // this@AuroraUIRealm 可用
+    val p: Player = player
+    val point: AuroraUIPoint? = evt.point
+    val button: AuroraUIButton = evt.button      // LEFT / RIGHT / SHIFT_LEFT ...
+    val sneaking: Boolean = evt.sneaking
+    cursor(true)
+    // 打开子锚点：
+    showAnchor("myshop:detail", listOf("item=5"))
+}</code></pre>
+      <h3><code>onClose</code></h3>
+      <pre><code>onClose { evt -&gt;
+    val reason: AuroraUICloseReason = evt.reason
+    // REQUESTED / BACK / REPLACED / PLAYER_QUIT / PLUGIN_DISABLE / ERROR ...
+}</code></pre>
+    </section>
+
+    <section id="onpointer">
+      <h2>DSL 事件 —— 指针</h2>
+      <pre><code>onPointerMove { evt -&gt;
+    val current: AuroraUIPoint? = evt.point
+    val prev:    AuroraUIPoint? = evt.previous
+}
+onPointerModeChange { evt -&gt;
+    val prev = evt.previous    // AuroraUIMode
+    val now  = evt.current
+}
+onScroll { evt -&gt;
+    val steps: Int = evt.steps  // 正=上, 负=下
+}</code></pre>
+    </section>
+
+    <section id="onsurface">
+      <h2>DSL 事件 —— 画布 & Tick</h2>
+      <pre><code>onSurfaceChange { evt -&gt;
+    val surface: AuroraUISurface = evt.surface
+    val initial: Boolean    = evt.initial   // true = 首次建立
+}
+onTick { evt -&gt;
+    val tick: Long = evt.tick
+}</code></pre>
+    </section>
+
+    <section id="realm">
+      <h2><code>AuroraUIRealm</code> —— 事件 receiver 的上下文</h2>
+      <p>所有 DSL lambda 的 receiver 都是 <code>AuroraUIRealm</code>，自带 player、画布、指针等能力：</p>
+      <table>
+        <thead><tr><th>成员</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody class="signatures">
+          <tr><td><code>player</code></td><td>Player</td><td>直接可用的 Bukkit Player</td></tr>
+          <tr><td><code>anchorId</code></td><td>String</td><td>当前锚点 ID</td></tr>
+          <tr><td><code>args</code></td><td>List&lt;String&gt;</td><td>打开时传入的参数</td></tr>
+          <tr><td><code>surface()</code></td><td>AuroraUISurface?</td><td>当前画布快照</td></tr>
+          <tr><td><code>point()</code></td><td>AuroraUIPoint?</td><td>当前指针位置</td></tr>
+          <tr><td><code>mode()</code></td><td>AuroraUIMode</td><td>当前指针模式</td></tr>
+          <tr><td><code>alive</code></td><td>Boolean</td><td>锚点是否还活着（onClose 触发时先变 false）</td></tr>
+          <tr><td><code>cursor(interactive)</code></td><td>Unit</td><td>视觉光标样式</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="navigation">
+      <h2>导航与生命周期管理</h2>
+      <table>
+        <thead><tr><th>Realm 方法</th><th>签名</th><th>说明</th></tr></thead>
+        <tbody class="signatures">
+          <tr><td><code>showMenu</code></td><td><code>(String, List&lt;String&gt; = emptyList()): Boolean</code></td><td>打开已声明菜单</td></tr>
+          <tr><td><code>showAnchor</code></td><td><code>(String, List&lt;String&gt; = emptyList()): Boolean</code></td><td>打开另一个锚点（会关闭当前）</td></tr>
+          <tr><td><code>back()</code></td><td><code>(): Boolean</code></td><td>历史栈返回</td></tr>
+          <tr><td><code>hide()</code></td><td><code>(): Unit</code></td><td>关闭当前锚点</td></tr>
+        </tbody>
+      </table>
+      <div class="note"><strong>实体 / 任务 / 资源绑定</strong>：在 <code>AuroraUIRealm</code> 里可以用 <code>spawnPrivate / track / runTimer</code> 等能力 —— 这些通过 <code>AuroraUIRealmController</code> 注入，实现侧自动管理生命周期。</div>
+    </section>
+
+    <section id="migration">
+      <h2>从旧 API 迁移</h2>
+      <div class="warn">旧 API（<code>AuroraUIApi</code> / <code>AuroraUIApplication</code> / <code>AuroraUIApplicationContext</code>）在 <code>LegacyCompat.kt</code> 保留为 <code>@Deprecated</code> 桥接层，当前 Paper 端仍接受。但所有新代码应直接写 <code>AuroraUI</code> DSL。</div>
+
+      <h3>旧代码</h3>
+      <pre><code>AuroraUIApi ui = Bukkit.getServicesManager().load(AuroraUIApi.class);
+
+AuroraUIApplicationHandle handle = ui.registerApplication(
+    this, "myshop:shop",
+    AuroraUIApplicationOptions.builder()
+        .permission("myshop.use")
+        .captureMouseScroll(true)
+        .build(),
+    context -&gt; new ShopSession(context)
+);
+
+// ShopSession 继承 AuroraUIApplicationSession，重写 onActivate / onClose ...</code></pre>
+
+      <h3>新代码（等价）</h3>
+      <pre><code>AuroraUI.declare("myshop:shop", this) {
+    permission = "myshop.use"
+    captureScroll = true
+
+    onActivate { evt -&gt;
+        // 原来写在 ShopSession.onActivate 的逻辑
+    }
+    onClose { evt -&gt;
+        // 原来写在 ShopSession.onClose 的逻辑
+    }
+}</code></pre>
+
+      <h3>对照表</h3>
+      <table>
+        <thead><tr><th>旧 API</th><th>新 API</th></tr></thead>
+        <tbody>
+          <tr><td><code>ServicesManager.load(AuroraUIApi.class)</code></td><td>直接 <code>AuroraUI</code> 单例（无需获取）</td></tr>
+          <tr><td><code>ui.registerApplication(...)</code></td><td><code>AuroraUI.declare(id, owner) { ... }</code></td></tr>
+          <tr><td><code>AuroraUIApplicationOptions.Builder</code></td><td>DSL 里直接写属性：<code>permission = / captureScroll = ...</code></td></tr>
+          <tr><td><code>extends AuroraUIApplicationSession</code></td><td>DSL 里写 <code>onActivate { ... }</code> 等 lambda</td></tr>
+          <tr><td><code>AuroraUIApplicationContext</code>（显式传递）</td><td>隐式 <code>AuroraUIRealm</code> receiver（<code>this.player / this.surface()</code>）</td></tr>
+          <tr><td><code>ui.registerRoute(owner, id, AuroraUIRoute)</code></td><td><code>AuroraUI.route(id, owner, AuroraUIRoute { player, args -&gt; ... })</code></td></tr>
+          <tr><td><code>ui.open(player, menuId, args)</code></td><td><code>AuroraUI.show(player, menuId, args, AuroraUIShowKind.MENU)</code></td></tr>
+          <tr><td><code>ui.openApplication(player, id, args)</code></td><td><code>AuroraUI.show(player, id, args, AuroraUIShowKind.ANCHOR)</code></td></tr>
+          <tr><td><code>AuroraUICapability.APPLICATION_SESSIONS</code></td><td>已废弃，所有能力始终可用</td></tr>
+          <tr><td><code>AuroraUIApplicationHandle.unregister()</code></td><td><code>handle.remove()</code> 或让插件禁用时自动移除</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer>AuroraUI 公开 API · <code>AuroraUI</code> 单例入口 · 与主 Wiki 内容一致</footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.side a'));
+  var sections = links.map(function (a) {
+    var id = a.getAttribute('href');
+    if (id.indexOf('#') !== 0) return null;
+    return document.querySelector(id);
+  }).filter(Boolean);
+  function onScroll() {
+    var top = window.scrollY + 80;
+    var current = sections[0];
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].offsetTop <= top) current = sections[i];
+    }
+    links.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,714 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuroraUI 开发者 Wiki</title>
+<style>
+  :root {
+    --bg: #0f1420;
+    --bg-alt: #161d2e;
+    --panel: #1b2436;
+    --border: #2a3650;
+    --text: #d8e0f0;
+    --muted: #8b98b5;
+    --accent: #5b9dff;
+    --accent-2: #7ee0c0;
+    --code-bg: #0b101b;
+    --warn: #ffcc66;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", "Microsoft YaHei", -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header.top {
+    position: sticky; top: 0; z-index: 30;
+    background: linear-gradient(90deg, #131a2a, #1a2437);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  header.top .logo { font-weight: 700; font-size: 18px; letter-spacing: .5px; display: flex; align-items: center; gap: 10px; }
+  header.top .logo img { width: 24px; height: 24px; border-radius: 4px; }
+  header.top .logo span { color: var(--accent-2); }
+  header.top .tag { color: var(--muted); font-size: 13px; }
+  .layout { display: flex; align-items: flex-start; max-width: 1400px; margin: 0 auto; }
+  nav.side {
+    position: sticky; top: 61px;
+    width: 270px; flex: 0 0 270px;
+    max-height: calc(100vh - 61px);
+    overflow-y: auto;
+    padding: 18px 10px 60px 20px;
+    border-right: 1px solid var(--border);
+    font-size: 14px;
+  }
+  nav.side h4 { color: var(--muted); text-transform: uppercase; font-size: 11px; letter-spacing: 1px; margin: 18px 8px 6px; }
+  nav.side a {
+    display: block; color: var(--text); padding: 5px 10px; border-radius: 6px;
+    border-left: 2px solid transparent;
+  }
+  nav.side a:hover { background: var(--bg-alt); text-decoration: none; }
+  nav.side a.active { background: var(--panel); border-left-color: var(--accent); color: #fff; }
+  main { flex: 1 1 auto; padding: 24px 40px 120px; min-width: 0; }
+  section { scroll-margin-top: 76px; margin-bottom: 44px; }
+  h1 { font-size: 30px; margin: 8px 0 6px; }
+  h2 {
+    font-size: 23px; margin: 0 0 14px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 { font-size: 18px; margin: 26px 0 10px; color: #eef3ff; }
+  h4 { font-size: 15px; margin: 18px 0 8px; color: var(--accent-2); }
+  p { margin: 10px 0; }
+  code {
+    background: var(--code-bg); color: #ffd9a0;
+    padding: 2px 6px; border-radius: 4px;
+    font-family: "Cascadia Code", "Consolas", "Courier New", monospace; font-size: 13px;
+  }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 16px; overflow-x: auto; margin: 12px 0;
+  }
+  pre code { background: none; color: #cfd8ea; padding: 0; font-size: 13px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--panel); color: #fff; }
+  tr:nth-child(even) td { background: #141b29; }
+  .lead { color: var(--muted); font-size: 15px; }
+  .note {
+    border-left: 3px solid var(--accent); background: #14203a;
+    padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 14px 0; color: #cfe0ff;
+  }
+  .warn {
+    border-left: 3px solid var(--warn); background: #2a2415;
+    padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 14px 0; color: #ffe6b3;
+  }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin: 16px 0; }
+  .card {
+    background: var(--bg-alt); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px;
+  }
+  .card h4 { margin-top: 0; color: var(--accent-2); }
+  .pill {
+    display: inline-block; background: var(--panel); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 999px; padding: 1px 10px; font-size: 12px; margin-right: 6px;
+  }
+  footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); padding: 20px 40px; }
+  @media (max-width: 900px) {
+    nav.side { display: none; }
+    main { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo"><img src="/aui/aui-icon.png" alt="icon">Aurora<span>UI</span></div>
+  <div class="tag">服务端驱动界面框架 · 开发者 Wiki</div>
+</header>
+
+<div class="layout">
+  <nav class="side">
+    <h4>获取</h4>
+    <a href="#download">下载与获取</a>
+    <a href="#singleplayer">单人游戏（Fabric）</a>
+    <h4>入门</h4>
+    <a href="#overview">1. 它是什么</a>
+    <a href="#datadir">2. 运行时数据目录</a>
+    <a href="#commands">3. 命令与权限</a>
+    <h4>菜单 DSL</h4>
+    <a href="#menu">4. HTML 菜单格式（v2 主格式）</a>
+    <a href="#actions">5. 动作语言</a>
+    <a href="#conditions">6. 条件语言</a>
+    <a href="#geometry">7. 坐标与几何</a>
+    <a href="#placeholders">8. 占位符</a>
+    <h4>进阶</h4>
+    <a href="#resources">9. 资源包管线</a>
+    <a href="/aui/api/index.html">10. 公开 API →</a>
+    <a href="#config">11. 配置项</a>
+    <a href="#editor">12. 编辑器协议</a>
+    <a href="#validation">13. 校验与常见错误</a>
+    <a href="#more">14. 更多文档</a>
+    <h4>工具</h4>
+    <a href="/auie/index.html">AuroraUIEditor 使用 Wiki →</a>
+  </nav>
+
+  <main>
+    <h1>AuroraUI 开发者 Wiki</h1>
+    <p class="lead">
+      面向服务端的 Minecraft 界面框架。用 YAML 描述「画布」，由服务端向单个玩家私有地渲染文字、图片、物品、方块、
+      矩形、边框与折线，并通过屏幕对齐的「命中区」接管点击、悬浮提示与导航。
+    </p>
+    <p class="lead">
+      本 Wiki 面向<strong>开发者</strong>：讲清 YAML 菜单格式、动作/条件语言、坐标几何、占位符、
+      资源包管线、配置项、命令权限，以及给第三方插件使用的公开 API。
+      <span class="pill">Java 21</span><span class="pill">Paper / MC 1.21.x</span><span class="pill">Fabric 单人</span>
+    </p>
+
+    <section id="download">
+      <h2>下载与获取</h2>
+      <p>AuroraUI 有两种运行形态，二者共用同一套菜单格式、动作/条件语言与编辑器协议：</p>
+      <div class="cards">
+        <div class="card">
+          <h4>AuroraUI · 服务端插件版</h4>
+          <p>装在 Paper 服务器上，面向<strong>多人联机</strong>；菜单由服务端权威渲染给每个玩家。</p>
+        </div>
+        <div class="card">
+          <h4>AuroraUI · Fabric 模组版</h4>
+          <p>装在客户端，供<strong>单人游戏</strong>使用；在本地存档里直接渲染菜单，无需另开服务器。</p>
+        </div>
+      </div>
+      <table>
+        <thead><tr><th>资源</th><th>获取</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>AuroraUI（插件 / Fabric 模组）</td>
+            <td>
+              <a href="https://www.minebbs.com/resources/minecraft-auroraui.18426//" target="_blank" rel="noopener">MineBBS →</a>
+              &nbsp;·&nbsp;
+              <a href="https://ifdian.net/a/aurorastudio" target="_blank" rel="noopener">爱发电 →</a>
+            </td>
+          </tr>
+          <tr>
+            <td>AuroraUIEditor（可视化编辑器）</td>
+            <td>
+              <a href="https://www.minebbs.com/resources/minecraft-auroraui.18412/" target="_blank" rel="noopener">MineBBS →</a>
+              &nbsp;·&nbsp;
+              <a href="https://modrinth.com/mod/auie" target="_blank" rel="noopener">Modrinth →</a>
+              &nbsp;·&nbsp;
+              <a href="https://ifdian.net/a/aurorastudio" target="_blank" rel="noopener">爱发电 →</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">编辑器只讲使用方法，见 <a href="/auie/index.html">AuroraUIEditor 使用 Wiki</a>。</div>
+    </section>
+
+    <section id="singleplayer">
+      <h2>单人游戏（Fabric）</h2>
+      <p>Fabric 模组版把 AuroraUI 跑在<strong>单人存档的集成服务器</strong>上，因此行为与服务端插件版一致：菜单仍然由服务端权威渲染，只是这个「服务端」就在你本地。</p>
+      <ul>
+        <li><strong>安装</strong>：Fabric Loader + Fabric API，把 AuroraUI 模组放进 <code>mods/</code>，进入任意单人存档即生效。</li>
+        <li><strong>数据目录</strong>：配置与菜单位于游戏实例的 <code>config/auroraui/</code>（<code>ui/</code>、<code>templates/</code>、<code>images/</code> 等），结构与第 2 节一致。</li>
+        <li><strong>命令与权限</strong>：命令与权限节点同服务端版（<code>/auroraui</code>，别名 <code>/aurora</code>）；单人存档默认拥有管理权限。</li>
+        <li><strong>编辑器联动</strong>：安装 AuroraUIEditor 后，在单人游戏里执行 <code>/auroraui edit &lt;菜单ID&gt;</code> 即可打开可视化编辑器，改动直接写回本地菜单文件。</li>
+      </ul>
+      <div class="note">编辑器只依赖「当前连接是否支持编辑通道」，所以它在单人集成服务器上与在 Paper 服务器上<strong>用法完全相同</strong>。</div>
+    </section>
+
+    <section id="overview">
+      <h2>1. 它是什么</h2>
+      <p>AuroraUI 不是传统的「箱子菜单」插件，而是一个<strong>服务端驱动的 UI 框架</strong>：</p>
+      <div class="cards">
+        <div class="card"><h4>画布 canvas</h4>固定在玩家视野前方的逻辑平面，坐标以逻辑像素为单位，原点在画布中心，X 向右、Y 向上。</div>
+        <div class="card"><h4>前端 frontend</h4>画布上的视觉节点树（可嵌套分组），只对目标玩家可见，纯展示。</div>
+        <div class="card"><h4>后端 backend</h4>屏幕对齐、<strong>不继承任何前端变换</strong>的矩形命中区，负责点击动作、悬浮提示、条件与拒绝动作。</div>
+        <div class="card"><h4>动作 / 条件 DSL</h4>一套文本 DSL，用于点击行为、打开/关闭菜单、状态读写、经济/物品操作等。</div>
+        <div class="card"><h4>资源包管线</h4>把 <code>plugins/AuroraUI/images</code> 下的 PNG 自动打包成资源包与位图字体。</div>
+        <div class="card"><h4>公开 API — 全新的 DSL 入口 <code>AuroraUI</code> 单例；声明锚点、打开菜单、路由分发全部通过 <code>AuroraUI.declare / AuroraUI.show / AuroraUI.route</code> 完成。</div>
+      </div>
+      <div class="note">服务端权威：菜单始终由服务端渲染与判定。多人服里玩家无需安装任何客户端模组；单人游戏则安装 Fabric 模组版（见上文「单人游戏（Fabric）」）。可选的 Fabric 编辑器只用于管理端可视化编辑。</div>
+    </section>
+
+    <section id="datadir">
+      <h2>2. 运行时数据目录</h2>
+      <p>插件首次启用会在 <code>plugins/AuroraUI/</code> 下创建/释放（单人 Fabric 版对应游戏实例的 <code>config/auroraui/</code>，结构相同）：</p>
+      <pre><code>plugins/AuroraUI/
+├─ config.yml            # 主配置
+├─ offset.yml            # 屏幕全局摆放
+├─ tooltip.yml           # tooltip 样式
+├─ animations.yml        # 动画时间线
+├─ ui/                   # 菜单文档（v2 主格式 *.html，v1 兼容 *.yml）
+│  ├─ example.html
+│  ├─ details.html
+│  ├─ m4-resources.html
+│  └─ m5-animation.html
+├─ templates/            # 可复用节点模板（*.yml）
+├─ languages/            # 语言文件
+├─ images/               # 资源包源图片（仅小写路径）
+│  ├─ example.png
+│  ├─ mouse/{mouse,choose}.png
+│  └─ ce/{topaz_background,topaz_frame}.png
+└─ generated/            # 自动生成，勿手改
+   ├─ auroraui-resourcepack.zip
+   ├─ images.index       # 稳定码位表
+   └─ resourcepack/      # 解包目录</code></pre>
+    </section>
+
+    <section id="commands">
+      <h2>3. 命令与权限</h2>
+      <p>主命令：<code>/auroraui</code>（别名 <code>/aurora</code>）。</p>
+      <h4>普通用户（<code>auroraui.use</code>，默认所有玩家）</h4>
+      <table>
+        <thead><tr><th>命令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>/aurora open &lt;菜单ID&gt; [参数...]</code></td><td>打开菜单</td></tr>
+          <tr><td><code>/aurora close</code></td><td>关闭当前菜单</td></tr>
+          <tr><td><code>/aurora mode &lt;touch|mouse&gt;</code></td><td>切换输入模式（别名 <code>crosshair</code>/<code>cursor</code>）</td></tr>
+          <tr><td><code>/aurora animate &lt;轨道ID&gt;</code></td><td>播放动画</td></tr>
+          <tr><td><code>/aurora stop-animation &lt;轨道ID&gt;</code></td><td>停止动画</td></tr>
+          <tr><td><code>/aurora pointer</code></td><td>查看指针诊断</td></tr>
+        </tbody>
+      </table>
+      <h4>管理员（<code>auroraui.admin</code>，默认 OP）</h4>
+      <table>
+        <thead><tr><th>命令</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>/aurora edit &lt;菜单ID&gt;</code></td><td>打开可视化编辑器</td></tr>
+          <tr><td><code>/aurora preview &lt;菜单ID&gt; [frontend|backend]</code></td><td>只读预览</td></tr>
+          <tr><td><code>/aurora reload [all]</code></td><td>重载菜单/动画/配置（<code>all</code> 同时重建资源包）</td></tr>
+          <tr><td><code>/aurora validate</code></td><td>仅校验菜单，不应用</td></tr>
+          <tr><td><code>/aurora resources</code></td><td>重建资源包</td></tr>
+          <tr><td><code>/aurora list</code> / <code>templates</code> / <code>animations</code></td><td>列出菜单/模板/动画</td></tr>
+          <tr><td><code>/aurora performance [reset]</code></td><td>性能统计</td></tr>
+          <tr><td><code>/aurora status</code></td><td>插件总览状态</td></tr>
+        </tbody>
+      </table>
+      <p><strong>自定义打开命令</strong>：菜单的 <code>open-commands</code> 会注册成独立命令（不带 <code>/</code>），注册时若与已有命令冲突会报错。</p>
+      <p><strong>快捷开关</strong>：默认 <strong>Shift+F</strong> 切换唯一的主菜单（<code>config.yml → shortcuts.shift-f</code>）。</p>
+    </section>
+
+    <section id="menu">
+      <h2>4. HTML 菜单格式（v2 主格式）</h2>
+      <div class="note">AuroraUI v2 菜单以 <strong>HTML</strong> 作为主格式，放在 <code>ui/*.html</code> 里。<strong>v1 YAML 继续兼容</strong>，老服务器的 <code>menus/*.yml</code> 会在启动时自动迁移到 <code>ui/</code>。编辑器支持一键 YAML→HTML 转换。</div>
+      <div class="warn">解析器使用 XML 模式读取菜单，所有标签必须闭合（自闭合用 <code>/&gt;</code>）。自定义标签（<code>frame</code>、<code>item</code>、<code>block</code> 等）在浏览器里无效，但在游戏里由 AuroraUI 解释。</div>
+
+      <h3>4.1 文档结构</h3>
+      <p>一个完整的 v2 菜单长这样：</p>
+      <pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;example&lt;/title&gt;
+  &lt;meta name="aurora:schema" content="2"/&gt;
+  &lt;meta name="aurora:id" content="example"/&gt;
+  &lt;meta name="aurora:permission" content="auroraui.use"/&gt;
+  &lt;meta name="aurora:open-commands" content="aui"/&gt;
+  &lt;meta name="aurora:main-menu" content="true"/&gt;
+  &lt;meta name="aurora:canvas-width" content="320"/&gt;
+  &lt;meta name="aurora:canvas-height" content="180"/&gt;
+  &lt;meta name="aurora:pixels-per-block" content="42.7"/&gt;
+  &lt;meta name="aurora:events-open" content="sound: BLOCK_CHEST_OPEN-1-1"/&gt;
+  &lt;meta name="aurora:events-close" content="sound: BLOCK_CHEST_CLOSE-1-1"/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- 前端视觉节点（只会被渲染，不会被当作 HTML 显示）--&gt;
+  &lt;section id="viewport-content" sx="0.427" sy="0.427"&gt;
+    &lt;rect id="background" width="320" height="180" color="#182031" opacity="235"/&gt;
+    &lt;text id="title" font-size="12" y="58" z="1" content="&amp;fAuroraUI - %player_name%"/&gt;
+  &lt;/section&gt;
+  &lt;!-- 后端交互区域（屏幕对齐，不继承前端变换）--&gt;
+  &lt;region id="action" x="0" y="0" width="100" height="40"
+      data-actions="right: close"
+      data-tooltip="&amp;7右键关闭"/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+      <h3>4.2 元数据（<code>&lt;meta name="aurora:*"&gt;</code>）</h3>
+      <table>
+        <thead><tr><th>meta 键</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>aurora:schema</code></td><td>常量</td><td>必须为 <code>2</code></td></tr>
+          <tr><td><code>aurora:id</code></td><td>字符串</td><td>菜单 ID，正则 <code>[a-z0-9][a-z0-9_-]*</code>；也可由 <code>&lt;title&gt;</code> 自动派生</td></tr>
+          <tr><td><code>aurora:permission</code></td><td>字符串</td><td>可选，额外权限节点</td></tr>
+          <tr><td><code>aurora:open-commands</code></td><td>逗号分隔</td><td>注册为独立命令；必须小写、不含 <code>/</code>、不重复、≤ 64 字符</td></tr>
+          <tr><td><code>aurora:main-menu</code></td><td>布尔</td><td>整组菜单里有且仅有一个为 <code>true</code></td></tr>
+          <tr><td><code>aurora:canvas-width</code> / <code>aurora:canvas-height</code></td><td>正数</td><td>逻辑画布尺寸，默认 320 × 180</td></tr>
+          <tr><td><code>aurora:pixels-per-block</code></td><td>正数</td><td>每方块像素数，默认 100</td></tr>
+          <tr><td><code>aurora:distance</code></td><td>正数</td><td>设计距离（方块），默认 3</td></tr>
+          <tr><td><code>aurora:events-open</code></td><td>动作字符串</td><td>菜单打开时执行</td></tr>
+          <tr><td><code>aurora:events-open-conditions</code></td><td>条件字符串</td><td>打开事件前置条件</td></tr>
+          <tr><td><code>aurora:events-close</code></td><td>动作字符串</td><td>菜单关闭时执行</td></tr>
+          <tr><td><code>aurora:events-close-conditions</code></td><td>条件字符串</td><td>关闭事件前置条件</td></tr>
+        </tbody>
+      </table>
+
+      <h3>4.3 前端视觉元素</h3>
+      <p>所有前端元素都支持通用变换属性：</p>
+      <table>
+        <thead><tr><th>属性</th><th>类型</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>id</code></td><td>字符串</td><td>节点 ID，在前端+后端+嵌套组内<strong>全局唯一</strong></td></tr>
+          <tr><td><code>x</code> / <code>y</code> / <code>z</code></td><td>浮点数</td><td>相对父级的平移偏移（逻辑像素），默认 0</td></tr>
+          <tr><td><code>rx</code> / <code>ry</code> / <code>rz</code></td><td>浮点数</td><td>旋转（弧度）；也可写 <code>rotation-x-deg</code> 等度制属性，自动转弧度</td></tr>
+          <tr><td><code>sx</code> / <code>sy</code></td><td>浮点数</td><td>缩放，两轴均不能为 0，默认 1</td></tr>
+          <tr><td><code>visible</code></td><td>布尔</td><td>是否可见；隐藏请用此项而不是把缩放设为 0</td></tr>
+        </tbody>
+      </table>
+
+      <p>各类型专有属性：</p>
+      <table>
+        <thead><tr><th>标签</th><th>专有属性</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>&lt;section&gt;</code> / <code>&lt;div&gt;</code></td><td>（无）</td><td>分组；子元素嵌套在内部</td></tr>
+          <tr><td><code>&lt;rect&gt;</code></td><td><code>width</code>, <code>height</code>, <code>color</code>, <code>opacity</code></td><td>实心矩形</td></tr>
+          <tr><td><code>&lt;line&gt;</code></td><td><code>width</code>, <code>thickness</code>, <code>color</code>, <code>opacity</code></td><td>线条</td></tr>
+          <tr><td><code>&lt;frame&gt;</code></td><td><code>width</code>, <code>height</code>, <code>thickness</code>, <code>color</code>, <code>opacity</code></td><td>边框；要求 <code>thickness*2 &lt; min(width,height)</code></td></tr>
+          <tr><td><code>&lt;text&gt;</code></td><td><code>font-size</code>, <code>font</code>, <code>content</code>, <code>opacity</code>, <code>line-width</code>, <code>text-align</code>, <code>update</code></td><td>文本；<code>content</code> 为空时取元素内文本</td></tr>
+          <tr><td><code>&lt;image&gt;</code></td><td><code>src</code>, <code>width</code>, <code>height</code>, <code>opacity</code>, <code>update</code></td><td>资源包图片；<code>src</code> 必须为 <code>/xxx.png</code> 形式</td></tr>
+          <tr><td><code>&lt;item&gt;</code></td><td><code>material</code>, <code>context</code></td><td>原版物品展示</td></tr>
+          <tr><td><code>&lt;block&gt;</code></td><td><code>block-data</code></td><td>原版方块展示</td></tr>
+        </tbody>
+      </table>
+
+      <p>属性细节：</p>
+      <ul>
+        <li><strong>color</strong>：<code>#RRGGBB</code>（不区分大小写）；透明度单独用 <code>opacity</code>（0–255，默认 255）。</li>
+        <li><strong>text.font</strong>：<code>namespace:path</code>，默认 <code>minecraft:default</code>。</li>
+        <li><strong>text.text-align</strong>：<code>left</code> / <code>center</code> / <code>right</code>，默认 <code>center</code>。</li>
+        <li><strong>image.src</strong>：虚拟根 <code>/</code> 下的 PNG 路径，如 <code>/ui/logo.png</code>；<code>%</code> 变量路径允许大写（用于动态贴图）。</li>
+        <li><strong>item.context</strong>：<code>GUI</code>（默认）/ <code>HEAD</code> / <code>FIXED</code> / <code>GROUND</code> / <code>NONE</code> / <code>FIRSTPERSON_LEFTHAND</code> / <code>FIRSTPERSON_RIGHTHAND</code> / <code>THIRDPERSON_LEFTHAND</code> / <code>THIRDPERSON_RIGHTHAND</code>。</li>
+        <li><strong>update</strong>：每节点的周期刷新（tick）。<code>-1</code> 不刷新；<code>&gt;0</code> 为间隔；<code>0</code> 非法。用于 <code>&lt;text&gt;</code> / <code>&lt;image&gt;</code> 内容刷新与后端 tooltip。</li>
+      </ul>
+
+      <p>前端示例（与第 1 节 README 里的 YAML 等价）：</p>
+      <pre><code>&lt;body&gt;
+  &lt;section id="viewport-content" sx="0.427" sy="0.427"&gt;
+    &lt;rect id="background" width="320" height="180" color="#182031" opacity="235"/&gt;
+    &lt;text id="title" font-size="12" y="58" z="1" update="20" content="&amp;fAuroraUI - %player_name%"/&gt;
+    &lt;item id="sword" material="minecraft:diamond_sword" context="GUI"
+        x="72" y="0" z="2" sx="40" sy="40"/&gt;
+    &lt;block id="block" block-data="minecraft:grass_block[snowy=false]"
+        x="120" y="48" z="2" rx="-20" ry="35" sx="30" sy="30"/&gt;
+  &lt;/section&gt;
+&lt;/body&gt;</code></pre>
+
+      <h3>4.4 后端交互区域</h3>
+      <p>后端区域是<strong>独立的、屏幕对齐的矩形</strong>，不继承任何前端变换。坐标 <code>x/y</code> 以画布中心为原点、<code>+x</code> 向右、<code>+y</code> 向上；<code>width/height</code> 是完整边长（命中判定为 <code>x ± width/2</code>、<code>y ± height/2</code>）。</p>
+
+      <pre><code>&lt;region id="card-area" x="-27.755" y="-2.135" width="46.97" height="23.485"
+    priority="0"
+    data-tooltip="&amp;f独立对齐的矩形命中区&amp;#10;&amp;7玩家: %player_name%"
+    update="20"
+    data-condition="perm auroraui.use"
+    data-actions="right: sound: UI_BUTTON_CLICK-1-1, right: open: details"
+    data-deny="tell: &amp;c无权限"/&gt;</code></pre>
+
+      <table>
+        <thead><tr><th>属性</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><code>x</code> / <code>y</code></td><td>中心坐标，默认 0</td></tr>
+          <tr><td><code>width</code> / <code>height</code></td><td>完整边长，必填，正数</td></tr>
+          <tr><td><code>priority</code></td><td>命中优先级，越大越先命中，默认 0</td></tr>
+          <tr><td><code>data-tooltip</code></td><td>悬浮提示；用 <code>&amp;#10;</code> 换行，支持占位符</td></tr>
+          <tr><td><code>update</code></td><td>tooltip 周期刷新（tick），同前端 update 规则</td></tr>
+          <tr><td><code>data-condition</code></td><td>命中前置条件（见第 6 节）</td></tr>
+          <tr><td><code>data-actions</code></td><td>点击动作（见下方 ClickTrigger 前缀）</td></tr>
+          <tr><td><code>data-deny</code></td><td>condition 不满足时执行的动作</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>ClickTrigger 前缀分组</strong>：<code>data-actions</code> 里可以用 <code>all:</code>、<code>left:</code>、<code>right:</code>、<code>shift:</code>、<code>shift-left:</code>、<code>shift-right:</code> 前缀把不同触发键的动作分开。无前缀的动作归入 <code>all</code>：</p>
+      <pre><code>data-actions="right: close, left: sound: UI_BUTTON_CLICK-1-1, all: refresh"
+data-actions="right: play-animation: card-bob, play-animation: card-scale"
+data-actions="close"   &lt;!-- 单个动作，ALL 触发器 --&gt;</code></pre>
+
+      <p>命中顺序：<strong>先按 <code>priority</code> 降序，再按文档顺序</strong>取第一个命中的区域。</p>
+      <div class="warn">常见坑：把前端视觉元素（<code>&lt;rect&gt;</code>/<code>&lt;item&gt;</code>/<code>&lt;text&gt;</code>）写进 <code>&lt;region&gt;</code> 的父级不会自动变成前端显示——后端区域只负责命中。要让玩家看到按钮，需要<strong>单独写前端元素</strong>，后端只写命中区；或者把视觉元素写在锚点元素（<code>&lt;a&gt;</code>/<code>&lt;button&gt;</code>）的子节点里。</div>
+
+      <h3>4.5 v1 YAML 兼容</h3>
+      <p>老版本的 <code>schema-version: 1</code> YAML 菜单继续被 MenuCatalog 加载（自动识别 <code>.yml</code> / <code>.yaml</code> 文件），完整字段规范见存档版文档。升级到 v2 后，编辑器可以一键把旧 YAML 转成 HTML：</p>
+      <pre><code>/aurora convert-ui &lt;旧菜单ID&gt;</code></pre>
+      <p>转换结果写到 <code>ui/&lt;菜单ID&gt;.html</code>，原 YAML 保留（可手动删除）。</p>
+    </section>
+
+    <section id="actions">
+      <h2>5. 动作语言（Action DSL）</h2>
+      <p>在 HTML 菜单里，动作写在 <code>&lt;region data-actions="..."&gt;</code> 或 <code>&lt;meta aurora:events-open="..."&gt;</code> 里。单个动作就是一个字符串；多项动作用 <code>,</code> 分隔（或用 ClickTrigger 前缀分组）：</p>
+      <pre><code>&lt;!-- 所有触发键都执行 --&gt;
+&lt;region data-actions="tell: &amp;aHello, sound: UI_BUTTON_CLICK-1-1"/&gt;
+
+&lt;!-- ClickTrigger 前缀分组（推荐）--&gt;
+&lt;region data-actions="right: sound: UI_BUTTON_CLICK-1-1,
+                      all: condition: 'perm auroraui.use' &amp;&amp; tell: &amp;aHello
+                      all: deny: tell: &amp;c无权限"/&gt;</code></pre>
+      <div class="note">v1 YAML 菜单里动作仍然可以写成结构化的 <code>actions: {all: ..., right: ...}</code> 映射，两套写法最终归一到同一条 ActionLanguage 解析路径。</div>
+
+      <h3>5.1 点击触发键</h3>
+      <p><code>all</code>（别名 <code>any</code>）、<code>left</code>、<code>right</code>、<code>shift</code>（左右 Shift 点击都算）、<code>shift-left</code>、<code>shift-right</code>。</p>
+      <div class="note">运行时中，<strong>非潜行时主键为右键</strong>，<strong>潜行时使用 Shift+右键</strong>；左键通过捕获实体由攻击事件触发。</div>
+
+      <h3>5.2 条件动作组</h3>
+      <p>一个组的可用键（含别名）：<code>priority</code>（<code>priority</code>/<code>pri</code>/<code>pris</code>）、<code>condition</code>（<code>condition</code>/<code>require</code>/<code>req</code>…）、<code>actions</code>（<code>actions</code>/<code>list</code>/<code>click</code>/<code>execute</code>/<code>cmd</code>…）、<code>deny</code>（<code>deny</code>/<code>deny-list</code>…）。每组<strong>至少要有一个 <code>actions</code> 或 <code>deny</code></strong>。</p>
+
+      <h3>5.3 内置动作（规范名）</h3>
+      <table>
+        <thead><tr><th>规范动作</th><th>说明</th><th>参数格式</th></tr></thead>
+        <tbody>
+          <tr><td><code>tell</code></td><td>发消息（支持 <code>&amp;</code> 颜色、<code>\n</code> 换行）</td><td>文本</td></tr>
+          <tr><td><code>tellraw</code></td><td>富文本（JSON 或 <code>&lt;文本@hover=..@command=..&gt;</code> 标签）</td><td>文本</td></tr>
+          <tr><td><code>command</code></td><td>以玩家身份执行命令（<code>;</code> 分隔多条）</td><td>命令（可带 <code>/</code>）</td></tr>
+          <tr><td><code>console</code></td><td>控制台执行命令（<code>;</code> 分隔）</td><td>命令</td></tr>
+          <tr><td><code>op</code></td><td>临时 OP 后以玩家执行</td><td>命令</td></tr>
+          <tr><td><code>chat</code></td><td>让玩家发送聊天</td><td>文本</td></tr>
+          <tr><td><code>actionbar</code></td><td>动作栏文本</td><td>文本</td></tr>
+          <tr><td><code>title</code></td><td>标题/副标题</td><td>反引号分词：<code>title `副标题` fadeIn stay fadeOut</code>（tick，默认 15/20/15）</td></tr>
+          <tr><td><code>bossbar</code></td><td>Boss 栏</td><td><code>文本 颜色 样式 持续tick</code>（默认 white / solid / 15）</td></tr>
+          <tr><td><code>sound</code></td><td>音效（<code>;</code> 分隔多条）</td><td><code>名称[-volume-pitch]</code>，如 <code>UI_BUTTON_CLICK-1-1</code></td></tr>
+          <tr><td><code>open</code></td><td>打开菜单</td><td><code>菜单ID [参数...]</code></td></tr>
+          <tr><td><code>open-app</code></td><td>打开第三方应用（<strong>仅规范写法</strong>）</td><td><code>namespace:path [参数...]</code></td></tr>
+          <tr><td><code>connect</code></td><td>切换到子服（BungeeCord）</td><td>服务器名</td></tr>
+          <tr><td><code>refresh</code></td><td>刷新动态节点/tooltip</td><td>可选目标（<code>;</code> 分隔），空/<code>*</code> 表示全部</td></tr>
+          <tr><td><code>play-animation</code></td><td>播放动画轨道</td><td>轨道 ID</td></tr>
+          <tr><td><code>stop-animation</code></td><td>停止动画轨道</td><td>轨道 ID</td></tr>
+          <tr><td><code>delay</code></td><td>延迟（tick）</td><td>数字</td></tr>
+          <tr><td><code>set-meta</code></td><td>写入临时状态（<code>;</code> 分隔 <code>key value</code>）</td><td><code>key value</code></td></tr>
+          <tr><td><code>remove-meta</code></td><td>删除状态（正则）</td><td>正则</td></tr>
+          <tr><td><code>set-data</code> / <code>remove-data</code></td><td>玩家持久状态</td><td>同上</td></tr>
+          <tr><td><code>set-global-data</code> / <code>remove-global-data</code></td><td>全局状态</td><td>同上</td></tr>
+          <tr><td><code>set-arg</code> / <code>clear-arg</code></td><td>设置/清空菜单参数</td><td>空白分隔</td></tr>
+          <tr><td><code>reload-inv</code></td><td>刷新玩家背包</td><td>—</td></tr>
+          <tr><td><code>give-money</code> / <code>take-money</code> / <code>set-money</code></td><td>Vault 经济</td><td>数值</td></tr>
+          <tr><td><code>give-points</code> / <code>take-points</code> / <code>set-points</code></td><td>PlayerPoints</td><td>数值</td></tr>
+          <tr><td><code>give-item</code> / <code>take-item</code> / <code>repair-item</code> / <code>enchant-item</code></td><td>物品操作</td><td>规格字符串</td></tr>
+          <tr><td><code>retype</code></td><td>重新触发当前菜单</td><td>—</td></tr>
+          <tr><td><code>close</code></td><td>关闭</td><td>—</td></tr>
+          <tr><td><code>back</code></td><td>返回上一级（历史栈）</td><td>—</td></tr>
+          <tr><td><code>return</code></td><td>终止当前动作序列</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <p>大量 TrMenu 风格别名会被自动归一化，例如 <code>sendtitle→title</code>、<code>playsound→sound</code>、<code>setdata→set-data</code>、<code>opengui→open</code>、<code>silentopen/forceopen→open</code>、<code>iconrefresh→refresh</code> 等。注意：<code>open-app</code> 不接受别名，必须写规范名。</p>
+
+      <h3>5.4 序列与内联选项</h3>
+      <ul>
+        <li><strong>序列分隔</strong>：<code>_||_</code> 或 <code>&amp;&amp;&amp;</code>。序列内<strong>选项最多的那条</strong>的选项会共享给全部。</li>
+        <li><strong>内联选项</strong>（写在动作末尾）：
+          <table>
+            <thead><tr><th>选项</th><th>语法</th><th>含义</th></tr></thead>
+            <tbody>
+              <tr><td>延迟</td><td><code>&lt;delay=20&gt;</code> / <code>&lt;wait:20&gt;</code></td><td>tick</td></tr>
+              <tr><td>概率</td><td><code>&lt;chance=0.5&gt;</code> / <code>&lt;rate:0.5&gt;</code></td><td><code>0..1</code></td></tr>
+              <tr><td>条件</td><td><code>{condition=...}</code> / <code>{requirement: ...}</code></td><td>条件表达式</td></tr>
+              <tr><td>目标玩家</td><td><code>&lt;players&gt;</code>（全体在线）/ <code>&lt;players=条件&gt;</code></td><td>条件筛选</td></tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+      <pre><code>&lt;region data-actions="right: sound: UI_BUTTON_CLICK-1-1 _||_ delay: 10 _||_ open: details,
+                      right: command: give %player_name% diamond 1 &lt;chance=0.3&gt;"/&gt;</code></pre>
+
+      <h3>5.5 输入捕获（Catcher）</h3>
+      <p>跨版本目前支持 <strong>CHAT</strong> 类型：玩家点击后开始捕获聊天输入。v1 YAML 仍可用结构化映射，v2 HTML 里把整个动作序列塞进 <code>data-actions</code>：</p>
+      <pre><code>&lt;!-- v1 YAML 写法 --&gt;
+actions:
+  right:
+    - input-catcher:
+        stage-id:
+          type: CHAT
+          start: [...]     # 开始阶段（别名 before）
+          cancel: [...]    # 取消阶段
+          end: [...]       # 结束阶段（别名 after）
+
+&lt;!-- v2 HTML 里等价的写法（input-catcher 作为规范动作名，内嵌结构用 JSON/YAML 片段或留空让 Java API 处理）--&gt;
+&lt;region data-actions="right: input-catcher" data-catcher-type="CHAT" data-catcher-stage="stage-id"/&gt;</code></pre>
+      <p><code>SIGN</code> / <code>ANVIL</code> / <code>BOOK</code> 需要额外的版本输入适配器，当前不受支持。</p>
+    </section>
+
+    <section id="conditions">
+      <h2>6. 条件语言（Condition DSL）</h2>
+      <p>条件为字符串，可组合：</p>
+      <ul>
+        <li><code>true</code> / <code>false</code></li>
+        <li><code>perm &lt;节点&gt;</code> / <code>permission &lt;节点&gt;</code>（<code>*</code> 前缀会被忽略）</li>
+        <li><code>not &lt;条件&gt;</code> / <code>!&lt;条件&gt;</code></li>
+        <li><code>A &amp;&amp; B</code>、<code>A || B</code>、<code>( ... )</code></li>
+        <li><code>all[a; b]</code> / <code>any[a, b]</code>（分隔符 <code>;</code> 或 <code>,</code>，支持嵌套括号）</li>
+        <li>比较：<code>check </code> 前缀可选；左侧/右侧支持占位符展开
+          <ul>
+            <li><code>is</code>（等于）、<code>is not</code>（不等）、<code>contains</code>（包含）</li>
+            <li><code>&gt;=</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&lt;</code>、<code>==</code>、<code>!=</code></li>
+            <li>两侧都能解析为数字时按数字比较，否则忽略大小写按字符串比较</li>
+          </ul>
+        </li>
+        <li>真值判定：包含 <code>%</code> 的表达式，或以 <code>*</code> / 反引号 / <code>"</code> / <code>'</code> 开头者，按真值处理（<code>true</code>/<code>yes</code>/<code>on</code>/非 0 数字为真）</li>
+      </ul>
+      <pre><code>condition: 'perm auroraui.use &amp;&amp; check %player_world% is world'
+condition: 'any[perm vip; perm staff]'</code></pre>
+    </section>
+
+    <section id="geometry">
+      <h2>7. 坐标与几何</h2>
+      <ul>
+        <li><strong>逻辑画布</strong>：单位 px，原点在中心，<code>+x</code> 右、<code>+y</code> 上、<code>+z</code> 朝向观察者。</li>
+        <li><strong>像素/方块</strong>：<code>canvas.pixels-per-block</code> 决定逻辑像素与世界方块的换算；<code>MenuPlane.project</code> 把玩家视线射线投影到画布得到逻辑坐标，<code>toWorld</code> 反之。</li>
+        <li><strong>前端变换顺序</strong>（<code>Transforms.local</code>，自内而外）：<code>translate(offset)</code> → <code>rotateZ</code> → <code>rotateX</code> → <code>rotateY</code> → <code>scale(sx, sy, 1)</code>。</li>
+        <li><strong>后端命中</strong>：与前端视觉/深度/变换<strong>完全无关</strong>；命中判定为矩形半宽/半高包含，按 <code>priority</code> 降序、文档顺序取首个命中。</li>
+        <li><strong>画布锚定</strong>：首次打开时固定世界锚点与坐标轴（遵循 <code>offset.yml</code>），后续切换路由复用同一平面，不随视角漂移；传送/跨维度/重生会重新锚定。</li>
+      </ul>
+      <div class="note">由于前端分组可带 <code>scale</code>，样板示例中 <code>viewport-content</code> 组用了 <code>scale: 0.427</code>，因此后端命中区坐标 ≈ 前端坐标 × 0.427。</div>
+    </section>
+
+    <section id="placeholders">
+      <h2>8. 占位符</h2>
+      <p>在动作、<code>content</code>、<code>tooltip</code>、<code>condition</code> 等文本位置均可使用：</p>
+      <table>
+        <thead><tr><th>语法</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td><code>{meta:key}</code> / <code>{m:key}</code></td><td>临时状态（会话级）</td></tr>
+          <tr><td><code>{data:key}</code> / <code>{d:key}</code></td><td>玩家持久状态</td></tr>
+          <tr><td><code>{globaldata:key}</code> / <code>{gdata:key}</code> / <code>{g:key}</code></td><td>全局状态</td></tr>
+          <tr><td><code>{0}</code>、<code>{1}</code> …</td><td>菜单参数（<code>open</code>/命令传入）</td></tr>
+          <tr><td><code>%auroraui_meta_KEY%</code></td><td>同上（命名式）</td></tr>
+          <tr><td><code>%auroraui_data_KEY%</code></td><td>持久状态</td></tr>
+          <tr><td><code>%auroraui_globaldata_KEY%</code></td><td>全局状态</td></tr>
+          <tr><td><code>%auroraui_args_N%</code></td><td>第 N 个参数</td></tr>
+          <tr><td><code>%player_name%</code></td><td>玩家名</td></tr>
+          <tr><td><code>%player_uuid%</code></td><td>UUID</td></tr>
+          <tr><td><code>%player_world%</code></td><td>世界名</td></tr>
+          <tr><td><code>%player_x%</code> / <code>%player_y%</code> / <code>%player_z%</code></td><td>坐标（保留 2 位小数）</td></tr>
+          <tr><td><code>%...%</code></td><td>若安装 PlaceholderAPI，则交给其解析</td></tr>
+        </tbody>
+      </table>
+      <p>规则：<strong>未能解析的占位符会替换为字符串 <code>null</code></strong>（便于调试与条件判定）。</p>
+    </section>
+
+    <section id="resources">
+      <h2>9. 资源包管线</h2>
+      <p>来源目录：<code>plugins/AuroraUI/images</code>（<strong>路径必须全小写</strong>）。构建产物：<code>generated/auroraui-resourcepack.zip</code>，同时解包到 <code>generated/resourcepack/</code>。</p>
+      <ul>
+        <li><strong>贴图落位</strong>：<code>assets/auroraui/textures/images/&lt;相对路径&gt;</code></li>
+        <li><strong>位图字体</strong>：<code>assets/auroraui/font/images.json</code>，字体键 <code>auroraui:images</code>，<code>height=8</code>、<code>ascent=4</code></li>
+        <li><strong>私用区码位</strong>：每个图片分配一个 <code>0xE000–0xF8FF</code> 的唯一码位，记录在 <code>generated/images.index</code>，保证跨次构建稳定</li>
+        <li><strong>pack.mcmeta</strong>：<code>pack_format: 34</code>，<code>supported_formats</code> 34–84</li>
+        <li><strong>限制</strong>：图片数 ≤ 4096；单图尺寸 ≤ 4096×4096；单文件 ≤ 16 MiB；总量 ≤ 128 MiB</li>
+        <li><strong>热构建保护</strong>：已发布图片不能在热构建中删除，需先移除引用再完整重启</li>
+      </ul>
+      <h3>九宫格 tooltip 皮肤</h3>
+      <p><code>tooltip.yml</code> 的 <code>skin</code> 使用 background + 可选 frame 合成九宫格，字体键 <code>auroraui:tooltip_slices</code>（<code>ascent=2</code>）：</p>
+      <ul>
+        <li>background 与 frame 的 PNG <strong>尺寸必须相同</strong></li>
+        <li><code>border &gt; 0</code> 且 <code>border*2 &lt; PNG 宽/高</code></li>
+        <li>生成的切片写入 <code>/_generated/nine_slice/*.png</code></li>
+      </ul>
+      <h3>CraftEngine</h3>
+      <p>CraftEngine 作为自定义内容集成：资源包 zip 会通过 CraftEngine 的缓存事件合并；打包版 CraftEngine 缺失时可自动释放（见第 11 节配置）。</p>
+    </section>
+
+        <section id="config">
+      <h2>11. 配置项</h2>
+      <h3>11.1 config.yml</h3>
+      <pre><code>language:
+  default: zh_CN           # 控制台/日志语言
+  follow-player-locale: true
+shortcuts:
+  shift-f: true            # Shift+F 切换主菜单（false 则不干预副手交换）
+embedded-craftengine:
+  auto-install: true
+  file-name: CraftEngine.jar
+mouse:
+  policy: player-choice    # player-choice | force-touch | force-mouse
+  default: touch
+  cursor:
+    sensitivity-x: 2.0
+    sensitivity-y: 2.0
+    clamp-margin: 3.0
+    size: 5.0
+    z: 5.0</code></pre>
+      <h3>11.2 offset.yml（屏幕全局摆放）</h3>
+      <p><code>touch</code> / <code>mouse</code> 各含 <code>distance</code>（眼到屏幕距离，方块）与 <code>offset{x,y,z}</code>（屏幕本地平移，方块；<code>x</code> 右、<code>y</code> 上、<code>z</code> 朝向观察者）。编辑器中默认走 mouse 模式。</p>
+      <h3>11.3 tooltip.yml</h3>
+      <p><code>touch</code> / <code>mouse</code> 各含 <code>offset</code>、<code>anchor</code>（四角）、<code>wrap</code>、<code>size</code>、<code>line-width</code>、<code>background</code>，以及 <code>skin</code>（九宫格）：<code>background</code>、<code>frame</code>、<code>border</code>、<code>padding</code>、<code>min-size</code>、<code>size-adjust</code>、<code>offset</code>、<code>scale</code>、<code>text-offset</code>、<code>seam-overlap</code>、<code>glyph-offset</code>、<code>column-offset</code>、<code>row-offset</code>。</p>
+      <h3>11.4 animations.yml</h3>
+      <pre><code>schema-version: 1
+transitions:
+  my-slide:
+    enter:  {duration: 8, easing: ease-out, offset: {x: -36, y: 0, z: 0}, scale: {x: 0.9, y: 0.9}}
+    exit:   {duration: 6, easing: ease-in,  offset: {x: 0, y: -28, z: 0}, scale: {x: 0.92, y: 0.92}}
+    switch: {duration: 7, easing: ease-out, offset: {x: 36, y: 0, z: 0}, scale: {x: 0.94, y: 0.94}}
+tracks:
+  model-spin:
+    target: spinner            # 前端节点 ID
+    property: rotation         # rotation | content | opacity | offset | scale
+    duration: 60
+    easing: linear
+    loop: repeat               # repeat | ping-pong
+    trigger: open              # open | api
+    keyframes:
+      - {at: 0, value: {x: -15, y: 0, z: 0}}
+      - {at: 1, value: {x: -15, y: 360, z: 0}}
+menus:
+  m5-animation:
+    transition: my-slide
+    tracks: [model-spin]</code></pre>
+      <ul>
+        <li><strong>transitions</strong>：菜单 <code>enter</code>/<code>exit</code>/<code>switch</code> 过渡。</li>
+        <li><strong>tracks</strong>：可复用的节点轨道；<code>trigger: open</code> 随菜单打开播放，<code>trigger: api</code> 需通过 <code>play-animation</code>/API 触发。</li>
+        <li><strong>menus</strong>：把某菜单绑定到某 transition，并列出随菜单激活的 tracks。</li>
+      </ul>
+    </section>
+
+    <section id="editor">
+      <h2>12. 编辑器协议</h2>
+      <p><code>protocol</code> 模块提供无第三方依赖的通信契约（<code>EditorProtocol.VERSION</code>），由服务端与 Fabric 编辑器共享。<code>/aurora status</code> 会显示当前协议版本。编辑器通过 mouse 模式打开，属管理端工具，玩家端不需要安装。</p>
+      <div class="note">编辑器的安装、打开方式、界面布局、快捷键与常见问题，见 <a href="/auie/index.html">AuroraUIEditor 使用 Wiki</a>。</div>
+    </section>
+
+    <section id="validation">
+      <h2>13. 加载期校验与常见错误</h2>
+      <ul>
+        <li><strong>严格字段</strong>：任何未知字段（如把 <code>label</code> 写进 backend）都会导致 <code>不支持的字段</code> 并拒绝加载该菜单。</li>
+        <li><strong>ID 唯一</strong>：节点 ID 在前端+后端+嵌套组内必须唯一。</li>
+        <li><strong>唯一主菜单</strong>：<code>main-menu: true</code> 有且仅有一个。</li>
+        <li><strong>open 目标必须存在</strong>：<code>open:</code> 指向的菜单 ID 必须已定义，或为 <code>namespace:path</code> 扩展路由；动态目标（含 <code>%</code>/<code>{</code>）豁免。</li>
+        <li><strong>refresh 目标必须存在</strong>：<code>refresh</code> 的参数必须是本菜单内某动态文字节点或后端区域 ID。</li>
+        <li><strong>open-commands 冲突</strong>：自定义命令不得与已注册命令重名。</li>
+        <li><strong>图片路径</strong>：仅小写、<code>.png</code>、虚拟根 <code>/</code> 下；不存在于资源包会渲染失败。</li>
+      </ul>
+      <p>调试流程：先 <code>/aurora validate</code> 校验，再 <code>/aurora reload all</code> 应用并重建资源包。</p>
+    </section>
+
+    <section id="more">
+      <h2>14. 更多文档</h2>
+      <table>
+        <thead><tr><th>文档</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td><a href="/auie/index.html">AuroraUIEditor 使用 Wiki</a></td><td>可视化编辑器的安装、使用与常见问题</td></tr>
+          <tr><td><a href="https://www.minebbs.com/resources/auroraui-minecraft.18413/" target="_blank" rel="noopener">AuroraUI · MineBBS</a></td><td>AuroraUI 插件 / Fabric 模组下载页</td></tr>
+          <tr><td><a href="https://www.minebbs.com/resources/minecraft-auroraui.18412/" target="_blank" rel="noopener">AuroraUIEditor · MineBBS</a></td><td>编辑器 MineBBS 下载页</td></tr>
+          <tr><td><a href="https://modrinth.com/mod/auie" target="_blank" rel="noopener">AuroraUIEditor · Modrinth</a></td><td>编辑器 Modrinth 下载页</td></tr>
+          <tr><td><code>README.md</code></td><td>Markdown 版本文档</td></tr>
+          <tr><td><code>docs/第三方应用API.md</code></td><td>应用 API 详解</td></tr>
+          <tr><td><code>docs/总技术规划书.md</code></td><td>总体技术规划</td></tr>
+          <tr><td><code>docs/M3-可视化编辑器.md</code></td><td>编辑器设计</td></tr>
+          <tr><td><code>docs/M4-资源与模板.md</code></td><td>资源与模板</td></tr>
+          <tr><td><code>docs/M5-动画与API.md</code></td><td>动画与 API</td></tr>
+          <tr><td><code>docs/M6-版本与体验.md</code></td><td>版本与体验</td></tr>
+          <tr><td><code>docs/Tooltip配置与微调.md</code></td><td>Tooltip 配置与微调</td></tr>
+          <tr><td><code>docs/TrMenu-M2-兼容表.md</code></td><td>TrMenu 兼容对照</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer>
+      AuroraUI 开发者 Wiki · 服务端权威界面框架
+    </footer>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('nav.side a'));
+    var sections = links.map(function (a) {
+      return document.querySelector(a.getAttribute('href'));
+    }).filter(Boolean);
+    function onScroll() {
+      var pos = window.scrollY + 90;
+      var current = sections[0];
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].offsetTop <= pos) current = sections[i];
+      }
+      links.forEach(function (a) {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current.id);
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+</body>
+</html>
