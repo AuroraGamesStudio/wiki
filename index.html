@@ -3,7 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>极光创想 · AuroraStudio</title>
+<title>极光创想 AuroraStudio | Minecraft 服务端 UI 框架与可视化编辑器</title>
+<meta name="description" content="极光创想 AuroraStudio 是专注 Minecraft 服务端与客户端工具开发的独立工作室，核心项目包括 AuroraUI 与 AuroraUIEditor。">
+<meta name="keywords" content="极光创想,AuroraStudio,AuroraUI,AuroraUIEditor,Minecraft,Paper,Fabric,服务端UI">
+<meta name="author" content="极光创想 AuroraStudio">
+<meta name="theme-color" content="#0d1117">
+<link rel="canonical" href="https://wiki.a-s.cc.cd/">
+<link rel="icon" href="/icon.png" type="image/png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="极光创想 AuroraStudio | Minecraft 服务端 UI 框架">
+<meta property="og:description" content="专注 Minecraft 服务端与客户端工具开发的独立工作室。">
+<meta property="og:url" content="https://wiki.a-s.cc.cd/">
+<meta property="og:image" content="https://wiki.a-s.cc.cd/icon.png">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "极光创想 AuroraStudio",
+  "url": "https://wiki.a-s.cc.cd/",
+  "logo": "https://wiki.a-s.cc.cd/icon.png",
+  "description": "专注 Minecraft 服务端与客户端工具开发的独立工作室",
+  "sameAs": ["https://github.com/AuroraGamesStudio"]
+}
+</script>
 <style>
   :root {
     --bg: #0d1117;
@@ -28,6 +51,13 @@
   }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
+  code {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 13px;
+  }
 
   /* ── NAV ── */
   nav {
@@ -173,6 +203,11 @@
     font-size: 13px; color: var(--muted);
   }
   footer a { color: var(--accent); }
+  footer .disclaimer {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 640px) {
@@ -186,19 +221,19 @@
 
 <nav>
   <a href="/" class="brand">
-    <img src="/icon.png" alt="logo">
+    <img src="/icon.png" alt="极光创想 AuroraStudio Logo">
     极光<span class="en">创想</span>
   </a>
   <div class="links">
-    <a href="/aui/index.html">AuroraUI</a>
-    <a href="/auie/index.html">AuroraUIEditor</a>
-    <a href="https://github.com/AuroraGamesStudio" target="_blank" rel="noopener">GitHub</a>
+    <a href="/aui/">AuroraUI</a>
+    <a href="/auie/">AuroraUIEditor</a>
+    <a href="https://github.com/AuroraGamesStudio" target="_blank" rel="noopener noreferrer">GitHub</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <img src="/icon.png" alt="logo" class="logo-large">
+  <img src="/icon.png" alt="极光创想 AuroraStudio Logo" class="logo-large">
   <h1>极光创想</h1>
   <div class="sub">AURORA STUDIO</div>
   <p class="desc">
@@ -206,9 +241,9 @@
     以创造为起点，让更灵活、更美观的自定义界面触手可及。
   </p>
   <div class="btns">
-    <a href="/aui/index.html" class="btn btn-primary">探索 AuroraUI</a>
-    <a href="/auie/index.html" class="btn">查看编辑器</a>
-    <a href="https://github.com/AuroraGamesStudio" class="btn" target="_blank" rel="noopener">GitHub 仓库</a>
+    <a href="/aui/" class="btn btn-primary">探索 AuroraUI</a>
+    <a href="/auie/" class="btn">查看编辑器</a>
+    <a href="https://github.com/AuroraGamesStudio" class="btn" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>
   </div>
 </div>
 
@@ -216,7 +251,7 @@
 <div class="section">
   <h2 class="section-title">核心项目</h2>
   <div class="cards">
-    <a href="/aui/index.html" class="card" style="text-decoration:none;color:inherit">
+    <a href="/aui/" class="card" style="text-decoration:none;color:inherit">
       <div class="icon"><img src="/aui/aui-icon.png" alt="" style="width:28px;height:28px;border-radius:4px;object-fit:contain"></div>
       <h3>AuroraUI</h3>
       <p>服务端驱动的 Minecraft 界面框架。用 HTML 描述画布，通过命中区接管点击、悬浮提示与导航，支持 Paper / Java 插件生态。</p>
@@ -226,7 +261,7 @@
         <span class="tag tag-blue">MC 1.19.2-最新版本</span>
       </div>
     </a>
-    <a href="/auie/index.html" class="card" style="text-decoration:none;color:inherit">
+    <a href="/auie/" class="card" style="text-decoration:none;color:inherit">
       <div class="icon"><img src="/auie/icon.png" alt="" style="width:28px;height:28px;border-radius:4px;object-fit:contain"></div>
       <h3>AuroraUIEditor</h3>
       <p>可视化编辑工具（Fabric 客户端模组）。在单人游戏或 Fabric 服务器上直接编辑菜单，所见即所得，0.2.0 起支持 UI 创建与读取。</p>
@@ -274,15 +309,16 @@
 <div class="section">
   <h2 class="section-title">关于<span> 极光创想</span></h2>
   <p style="color:var(--muted);max-width:720px;line-height:1.8">
-    极光创想（AuroraStudio）是一个小型独立开发团队，致力于让 Minecraft 服务器拥有更灵活、更美观的自定义界面体验。
+    极光创想（AuroraStudio，GitHub 组织：AuroraGamesStudio）是一个小型独立开发团队，致力于让 Minecraft 服务器拥有更灵活、更美观的自定义界面体验。
     我们的理念是降低 UI 开发门槛——设计师用 HTML 写菜单，管理员用编辑器拖拽调整，开发者通过 Java API 深度集成。
-    所有插件项目均开放API，欢迎社区参与共建。
+    所有插件项目均开放 API，欢迎社区参与共建。
   </p>
 </div>
 
 <footer>
   极光创想 &copy; 2026 &nbsp;·&nbsp; AuroraStudio &nbsp;·&nbsp;
-  <a href="https://github.com/AuroraGamesStudio" target="_blank" rel="noopener">GitHub</a>
+  <a href="https://github.com/AuroraGamesStudio" target="_blank" rel="noopener noreferrer">GitHub</a>
+  <p class="disclaimer">极光创想 AuroraStudio 是独立 Minecraft 工具开发工作室，与其他同名主体无隶属关系。</p>
 </footer>
 
 </body>
