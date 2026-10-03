@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AuroraStudio · 首页</title>
+<style>
+  :root {
+    --bg: #0f1420; --bg-alt: #161d2e; --panel: #1b2436;
+    --border: #2a3650; --text: #d8e0f0; --muted: #8b98b5;
+    --accent: #5b9dff; --accent-2: #7ee0c0; --code-bg: #0b101b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Segoe UI", "Microsoft YaHei", -apple-system, Roboto, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  header {
+    background: linear-gradient(90deg, #131a2a, #1a2437);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px; display: flex; align-items: center; gap: 12px;
+  }
+  header .logo { font-weight: 700; font-size: 20px; letter-spacing: .5px; }
+  header .logo span { color: var(--accent-2); }
+  header .tag { color: var(--muted); font-size: 13px; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+  h1 { font-size: 32px; margin: 0 0 8px; }
+  h2 { font-size: 22px; margin: 36px 0 12px; color: #eef3ff; }
+  .lead { color: var(--muted); font-size: 16px; margin-bottom: 24px; }
+  .subtitle { color: var(--accent-2); font-size: 15px; margin-bottom: 32px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 20px 0; }
+  .card {
+    background: var(--bg-alt); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px 20px; transition: border-color 0.15s;
+  }
+  .card:hover { border-color: var(--accent); }
+  .card h3 { margin: 0 0 6px; font-size: 16px; color: var(--accent-2); }
+  .card p { margin: 0; font-size: 14px; color: var(--muted); }
+  .card .badge { display: inline-block; background: var(--panel); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 999px; padding: 1px 8px; font-size: 11px; margin-top: 8px; }
+  .note {
+    border-left: 3px solid var(--accent); background: #14203a;
+    padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 16px 0; color: #cfe0ff; font-size: 14px;
+  }
+  .team { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+  .team-member {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 14px; font-size: 14px; color: var(--text);
+  }
+  .team-member span { color: var(--accent-2); }
+  footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--border);
+    padding: 20px 24px; text-align: center; }
+  @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Aurora<span>Studio</span></div>
+  <div class="tag">Minecraft 工具与模组开发团队</div>
+</header>
+
+<div class="wrap">
+  <h1>欢迎来到 AuroraStudio</h1>
+  <p class="lead">
+    我们是一个专注于 Minecraft 服务端与客户端工具开发的独立团队。<br>
+    目前主要项目是 <strong>AuroraUI</strong> —— 一套面向 Paper 服务器的服务端驱动界面框架，以及配套的可视化编辑器。
+  </p>
+  <p class="subtitle">
+    <span style="color:var(--accent)">◆</span>&nbsp; Paper / Java 服务端插件 &nbsp;·&nbsp;
+    <span style="color:var(--accent-2)">◆</span>&nbsp; Fabric 客户端模组 &nbsp;·&nbsp;
+    <span style="color:#ffd9a0">◆</span>&nbsp; 可视化编辑器
+  </p>
+
+  <h2>核心项目</h2>
+  <div class="cards">
+    <a href="/aui/index.html" class="card" style="text-decoration:none;color:inherit">
+      <h3>AuroraUI</h3>
+      <p>Paper 服务端驱动的 Minecraft 界面框架。用 HTML 菜单描述 UI，通过画布渲染文字、图片、物品、方块与命中区，支持丰富的动作与条件语言。</p>
+      <span class="badge">Java 21 · Paper · MC 1.21.x</span>
+    </a>
+    <a href="/auie/index.html" class="card" style="text-decoration:none;color:inherit">
+      <h3>AuroraUIEditor</h3>
+      <p>AuroraUI 的可视化编辑工具（Fabric 客户端模组）。在单人游戏或 Fabric 服务器上直接编辑菜单，所见即所得。</p>
+      <span class="badge">Fabric · MC 1.21.11 · 客户端</span>
+    </a>
+  </div>
+
+  <h2>关于团队</h2>
+  <p>
+    AuroraStudio 是一个小型开发团队，致力于让 Minecraft 服务器拥有更灵活、更美观的自定义界面体验。
+    我们的理念是降低 UI 开发门槛——设计师用 HTML 写菜单，管理员用编辑器拖拽调整，开发者通过 Java API 深度集成。
+  </p>
+  <p style="color:var(--muted); font-size:14px">
+    如需联系或了解更多，请访问我们的开源仓库或社区页面。
+  </p>
+
+  <h2>快速链接</h2>
+  <ul style="color:var(--muted); padding-left: 20px;">
+    <li><a href="/aui/index.html">AuroraUI 框架 Wiki</a> — 菜单格式、动作语言、API 详解</li>
+    <li><a href="/aui/api/index.html">公开 API 文档</a> — <code>AuroraUI</code> 单例入口与 DSL</li>
+    <li><a href="/auie/index.html">AuroraUIEditor 使用 Wiki</a> — 编辑器安装、操作与快捷键</li>
+  </ul>
+
+  <div class="note">
+    本 Wiki 由 AuroraStudio 团队维护，文档内容持续更新中。如有错误或建议，欢迎提交 Issue。
+  </div>
+</div>
+
+<footer>
+  AuroraStudio &copy; 2026 &nbsp;·&nbsp; 所有项目基于 Minecraft 社区开源协议
+</footer>
+
+</body>
+</html>

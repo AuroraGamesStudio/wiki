@@ -160,15 +160,15 @@
           <p>装在 Paper 服务器上，面向<strong>多人联机</strong>；菜单由服务端权威渲染给每个玩家。</p>
         </div>
         <div class="card">
-          <h4>AuroraUI · Fabric 模组版</h4>
-          <p>装在客户端，供<strong>单人游戏</strong>使用；在本地存档里直接渲染菜单，无需另开服务器。</p>
+          <h4>AuroraUIEditor · Fabric 模组版</h4>
+          <p>装在客户端，供<strong>单人游戏</strong>使用；AuroraUIEditor 0.2.0 引入单人游戏与 Fabric 服务器的 UI 创建与读取，担任了 Fabric 模组版本的 AuroraUI 功能。</p>
         </div>
       </div>
       <table>
         <thead><tr><th>资源</th><th>获取</th></tr></thead>
         <tbody>
           <tr>
-            <td>AuroraUI（插件 / Fabric 模组）</td>
+            <td>AuroraUI（Paper 插件）</td>
             <td>
               <a href="https://www.minebbs.com/resources/minecraft-auroraui.18426//" target="_blank" rel="noopener">MineBBS →</a>
               &nbsp;·&nbsp;
@@ -192,9 +192,9 @@
 
     <section id="singleplayer">
       <h2>单人游戏（Fabric）</h2>
-      <p>Fabric 模组版把 AuroraUI 跑在<strong>单人存档的集成服务器</strong>上，因此行为与服务端插件版一致：菜单仍然由服务端权威渲染，只是这个「服务端」就在你本地。</p>
+      <p>Fabric 模组版（AuroraUIEditor）把 AuroraUI 跑在<strong>单人存档的集成服务器</strong>上，因此行为与服务端插件版一致：菜单仍然由服务端权威渲染，只是这个「服务端」就在你本地。AuroraUIEditor 0.2.0 引入了单人游戏与 Fabric 服务器的 UI 创建与读取功能。</p>
       <ul>
-        <li><strong>安装</strong>：Fabric Loader + Fabric API，把 AuroraUI 模组放进 <code>mods/</code>，进入任意单人存档即生效。</li>
+        <li><strong>安装</strong>：Fabric Loader + Fabric API，把 AuroraUIEditor 模组放进 <code>mods/</code>，进入任意单人存档即生效。</li>
         <li><strong>数据目录</strong>：配置与菜单位于游戏实例的 <code>config/auroraui/</code>（<code>ui/</code>、<code>templates/</code>、<code>images/</code> 等），结构与第 2 节一致。</li>
         <li><strong>命令与权限</strong>：命令与权限节点同服务端版（<code>/auroraui</code>，别名 <code>/aurora</code>）；单人存档默认拥有管理权限。</li>
         <li><strong>编辑器联动</strong>：安装 AuroraUIEditor 后，在单人游戏里执行 <code>/auroraui edit &lt;菜单ID&gt;</code> 即可打开可视化编辑器，改动直接写回本地菜单文件。</li>
@@ -668,7 +668,7 @@ menus:
         <thead><tr><th>文档</th><th>内容</th></tr></thead>
         <tbody>
           <tr><td><a href="/auie/index.html">AuroraUIEditor 使用 Wiki</a></td><td>可视化编辑器的安装、使用与常见问题</td></tr>
-          <tr><td><a href="https://www.minebbs.com/resources/auroraui-minecraft.18413/" target="_blank" rel="noopener">AuroraUI · MineBBS</a></td><td>AuroraUI 插件 / Fabric 模组下载页</td></tr>
+          <tr><td><a href="https://www.minebbs.com/resources/auroraui-minecraft.18413/" target="_blank" rel="noopener">AuroraUI · MineBBS</a></td><td>AuroraUI 服务端插件下载页</td></tr>
           <tr><td><a href="https://www.minebbs.com/resources/minecraft-auroraui.18412/" target="_blank" rel="noopener">AuroraUIEditor · MineBBS</a></td><td>编辑器 MineBBS 下载页</td></tr>
           <tr><td><a href="https://modrinth.com/mod/auie" target="_blank" rel="noopener">AuroraUIEditor · Modrinth</a></td><td>编辑器 Modrinth 下载页</td></tr>
           <tr><td><code>README.md</code></td><td>Markdown 版本文档</td></tr>
